@@ -1,6 +1,6 @@
 # Best Served Warm
 
-A cozy cafe game prototype in Python. The menu uses the supplied ChatGPT artwork, line-boil buttons rendered with [pikupiku](https://github.com/S1mplector/pikupiku), and a repeated parchment rectangle sprite that follows the frequency bands of the music. The music and menu fade in together. New Game starts a small drink-serving loop; Load Game restores it; Options controls music, visualizer, and fullscreen.
+A cozy cafe game prototype in Python. The menu uses the supplied ChatGPT artwork, animated buttons, and a custom animated cursor rendered with [pikupiku](https://github.com/S1mplector/pikupiku). Buttons have clear hover and click states. The music and menu fade in together. New Game starts a small drink-serving loop; Load Game restores it; Options controls music and fullscreen. The bar visualizer is saved in the codebase for later, but is currently hidden.
 
 ## Run
 
@@ -28,9 +28,9 @@ PyInstaller must run **on each target OS**. The GitHub Actions workflow runs hea
 ## Layout
 
 - `src/best_served_warm/app.py`: event loop and scenes
-- `art.py`: still images and pikupiku GIF frames
-- `music.py`: music playback and spectrum analysis of the same WAV
-- `visualizer.py`: smoothing and repeated bar sprite
+- `art.py`: still images, pikupiku button GIFs, and cursor GIF frames
+- `music.py`: music playback, with optional spectrum analysis for future visuals
+- `visualizer.py`: dormant bar renderer retained for later
 - `storage.py`: save and options data
 - `assets/`: original menu art, animated buttons, one bar sprite, music
 

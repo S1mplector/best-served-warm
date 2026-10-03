@@ -1,9 +1,7 @@
 """Pygame application: menu, first playable cafe day, and options."""
-import math
 import pygame
-from .art import AnimatedButton, load_image
+from .art import AnimatedButton, AnimatedCursor, load_image
 from .music import Music
-from .visualizer import Visualizer
 from .storage import DRINKS, load_game, load_options, new_game, save_game, save_options
 
 WIDTH, HEIGHT = 1280, 720
@@ -31,16 +29,17 @@ class App:
         self.big = pygame.font.SysFont("georgia", 48, bold=True)
         self.background = pygame.transform.smoothscale(load_image("images", "background.png"), (WIDTH, HEIGHT))
         logo = load_image("images", "logo.png")
-        self.logo = pygame.transform.smoothscale(logo, (600, round(logo.get_height()*600/logo.get_width())))
+        self.logo = pygame.transform.smoothscale(logo, (520, round(logo.get_height()*520/logo.get_width())))
         self.buttons = {
-            "new": AnimatedButton("new-game", (640, 286)),
-            "load": AnimatedButton("load-game", (640, 382)),
-            "options": AnimatedButton("options", (640, 478)),
-            "exit": AnimatedButton("exit-game", (640, 574)),
+            "new": AnimatedButton("new-game", (640, 318)),
+            "load": AnimatedButton("load-game", (640, 414)),
+            "options": AnimatedButton("options", (640, 510)),
+            "exit": AnimatedButton("exit-game", (640, 606)),
         }
+        self.cursor = AnimatedCursor()
+        pygame.mouse.set_visible(False)
         self.music = Music()
         self.music.set_volume(self.options["volume"])
-        self.visualizer = Visualizer()
         self.state = "menu"
         self.game = None
         self.message = ""
@@ -77,8 +76,6 @@ class App:
                 self.options["volume"] = round(max(0,min(1,(x-420)/440)),2)
                 self.music.set_volume(self.options["volume"])
             elif pygame.Rect(360,360,560,75).collidepoint(x,y):
-                self.options["visualizer"] = not self.options["visualizer"]
-            elif pygame.Rect(360,450,560,75).collidepoint(x,y):
                 self.options["fullscreen"] = not self.options["fullscreen"]
                 flags = pygame.RESIZABLE | (pygame.FULLSCREEN if self.options["fullscreen"] else 0)
                 self.window = pygame.display.set_mode((WIDTH,HEIGHT),flags)
@@ -104,12 +101,10 @@ class App:
         self.canvas.blit(box,rect.topleft)
 
     def draw_menu(self):
-        self.canvas.blit(self.logo,self.logo.get_rect(center=(640,106)))
+        self.canvas.blit(self.logo,self.logo.get_rect(center=(640,154)))
         mouse = self.pointer(pygame.mouse.get_pos())
         for button in self.buttons.values():
             button.draw(self.canvas,self.elapsed,button.rect.collidepoint(mouse))
-        label(self.canvas,self.small,"A small cafe, a warm cup, a quiet moment.",(640,662))
-        label(self.canvas,self.small,"Music: Moon Unit / HoliznaCC0 (CC0)",(640,695))
 
     def draw_options(self):
         self.panel(pygame.Rect(310,150,660,520))
@@ -117,8 +112,7 @@ class App:
         label(self.canvas,self.font,f"Music volume   {round(self.options['volume']*100)}%",(640,310))
         pygame.draw.line(self.canvas,INK,(420,345),(860,345),6)
         pygame.draw.circle(self.canvas,AMBER,(420+round(440*self.options["volume"]),345),15)
-        label(self.canvas,self.font,"Visualizer: " + ("On" if self.options["visualizer"] else "Off"),(640,405))
-        label(self.canvas,self.font,"Fullscreen: " + ("On" if self.options["fullscreen"] else "Off"),(640,495))
+        label(self.canvas,self.font,"Fullscreen: " + ("On" if self.options["fullscreen"] else "Off"),(640,405))
         self.panel(pygame.Rect(480,580,320,64))
         label(self.canvas,self.font,"Save & Back",(640,612))
 
@@ -138,7 +132,6 @@ class App:
     def draw(self):
         self.canvas.blit(self.background,(0,0))
         if self.state=="menu":
-            self.visualizer.draw(self.canvas,22,704,self.elapsed,self.options["visualizer"])
             self.draw_menu()
         elif self.state=="options":self.draw_options()
         else:self.draw_game()
@@ -146,6 +139,10 @@ class App:
             label(self.canvas,self.small,self.message,(640,660))
         if self.elapsed<2.0:
             veil=pygame.Surface((WIDTH,HEIGHT));veil.fill((32,17,13));veil.set_alpha(round(255*(1-self.elapsed/2)**2));self.canvas.blit(veil,(0,0))
+        mouse = self.pointer(pygame.mouse.get_pos())
+        if 0 <= mouse[0] < WIDTH and 0 <= mouse[1] < HEIGHT:
+            hovered = self.state == "menu" and any(button.rect.collidepoint(mouse) for button in self.buttons.values())
+            self.cursor.draw(self.canvas, *mouse, self.elapsed, hovered)
         ww,wh=self.window.get_size();scale=min(ww/WIDTH,wh/HEIGHT)
         w,h=round(WIDTH*scale),round(HEIGHT*scale)
         self.window.fill((35,19,13))
@@ -163,9 +160,10 @@ class App:
                         if self.state=="menu":self.running=False
                         elif self.state=="game":save_game(self.game);self.state="menu"
                         else:save_options(self.options);self.state="menu"
-            self.visualizer.update(self.music.levels(),dt)
             self.draw()
-        self.music.close();pygame.quit()
+        self.music.close()
+        pygame.mouse.set_visible(True)
+        pygame.quit()
 
 
 def main():

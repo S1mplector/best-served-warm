@@ -9,7 +9,7 @@ def load_image(*parts: str) -> pygame.Surface:
 
 
 class AnimatedButton:
-    def __init__(self, name: str, center: tuple[int, int], width: int = 326):
+    def __init__(self, name: str, center: tuple[int, int], width: int = 274):
         original = Image.open(asset_path("buttons", name + ".png")).convert("RGBA")
         gif = Image.open(asset_path("buttons", name + ".gif"))
         mask = original.getchannel("A").resize(gif.size, Image.Resampling.LANCZOS)
@@ -26,8 +26,36 @@ class AnimatedButton:
         self.phase = {"new-game": 0, "load-game": 1, "options": 2, "exit-game": 3}[name]
 
     def draw(self, screen: pygame.Surface, elapsed: float, hovered: bool) -> None:
-        frame = self.frames[(int(elapsed * 6) + self.phase) % len(self.frames)]
-        scale = 1.045 if hovered else 1.0
+        frame = self.frames[(int(elapsed * 8) + self.phase) % len(self.frames)]
+        scale = 1.09 if hovered else 1.0
+        center = (self.rect.centerx, self.rect.centery - (4 if hovered else 0))
+        if hovered:
+            glow = pygame.Surface((self.rect.width + 34, self.rect.height + 24), pygame.SRCALPHA)
+            pygame.draw.ellipse(glow, (169, 78, 39, 105), glow.get_rect())
+            screen.blit(glow, glow.get_rect(center=center))
         if scale != 1.0:
             frame = pygame.transform.smoothscale(frame, (round(frame.get_width()*scale), round(frame.get_height()*scale)))
-        screen.blit(frame, frame.get_rect(center=self.rect.center))
+        screen.blit(frame, frame.get_rect(center=center))
+
+
+class AnimatedCursor:
+    """Draw pikupiku frames with the source PNG's alpha and a top-left hotspot."""
+
+    def __init__(self, width: int = 38):
+        original = Image.open(asset_path("cursor", "cursor.png")).convert("RGBA")
+        gif = Image.open(asset_path("cursor", "cursor.gif"))
+        mask = original.getchannel("A").resize(gif.size, Image.Resampling.LANCZOS)
+        self.frames = []
+        for frame in ImageSequence.Iterator(gif):
+            rgba = frame.convert("RGBA")
+            rgba.putalpha(mask)
+            surface = pygame.image.frombytes(rgba.tobytes(), rgba.size, "RGBA").convert_alpha()
+            surface = surface.subsurface(surface.get_bounding_rect(min_alpha=16)).copy()
+            height = round(surface.get_height() * width / surface.get_width())
+            self.frames.append(pygame.transform.smoothscale(surface, (width, height)))
+
+    def draw(self, screen: pygame.Surface, x: float, y: float, elapsed: float, hovered: bool) -> None:
+        frame = self.frames[int(elapsed * 8) % len(self.frames)]
+        if hovered:
+            frame = pygame.transform.smoothscale(frame, (round(frame.get_width() * 1.12), round(frame.get_height() * 1.12)))
+        screen.blit(frame, (round(x), round(y)))

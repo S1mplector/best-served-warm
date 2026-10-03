@@ -6,8 +6,21 @@ from .paths import asset_path
 
 
 class Music:
-    def __init__(self):
+    def __init__(self, analyze: bool = False):
         self.path = asset_path("audio", "moon-unit.wav")
+        self.energies = None
+        if analyze:
+            self._analyze()
+        self.available = False
+        try:
+            pygame.mixer.init(frequency=22050, size=-16, channels=1)
+            pygame.mixer.music.load(str(self.path))
+            pygame.mixer.music.play(-1, fade_ms=2400)
+            self.available = True
+        except pygame.error:
+            pass
+
+    def _analyze(self) -> None:
         with wave.open(str(self.path), "rb") as source:
             sample_rate = source.getframerate()
             assert source.getnchannels() == 1 and source.getsampwidth() == 2
@@ -26,21 +39,13 @@ class Music:
             self.energies[i] = [np.sqrt(np.mean(spectrum[a:max(a+1,b)]**2)) for a,b in bands]
         reference = np.maximum(np.percentile(self.energies, 90, axis=0), 0.01)
         self.energies = np.clip((self.energies / reference) ** 0.65, 0, 1.3)
-        self.available = False
-        try:
-            pygame.mixer.init(frequency=22050, size=-16, channels=1)
-            pygame.mixer.music.load(str(self.path))
-            pygame.mixer.music.play(-1, fade_ms=2400)
-            self.available = True
-        except pygame.error:
-            pass
 
     def set_volume(self, volume: float) -> None:
         if self.available:
             pygame.mixer.music.set_volume(volume)
 
     def levels(self) -> np.ndarray:
-        if not self.available or not pygame.mixer.music.get_busy():
+        if self.energies is None or not self.available or not pygame.mixer.music.get_busy():
             return np.zeros(28, dtype=np.float32)
         position = max(0, pygame.mixer.music.get_pos()) / 1000.0 % self.duration
         index = min(len(self.energies)-1, int(position*self.rate))
