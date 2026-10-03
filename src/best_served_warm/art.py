@@ -73,16 +73,14 @@ class AnimatedLogo:
         screen.blit(frame, frame.get_rect(center=center))
 
 
-class AnimatedCursor:
-    """Draw the selected 16x16 itch cursor sprites with a top-left hotspot."""
+class Cursor:
+    """Smooth high-resolution artwork composited directly onto the window."""
+    def __init__(self, width=30):
+        source = load_image("cursor", "cozy-smooth.png")
+        source = source.subsurface(source.get_bounding_rect(min_alpha=16)).copy()
+        height = round(source.get_height() * width / source.get_width())
+        self.image = pygame.transform.smoothscale(source, (width, height))
+        self.hotspot = (1, 1)
 
-    def __init__(self, width: int = 16):
-        self.arrow = load_image("cursor", "megabyte", "cursor-pointer-1.png")
-        self.hand = load_image("cursor", "megabyte", "cursor-pointer-5.png")
-        if width != 16:
-            size = (width, width)
-            self.arrow = pygame.transform.scale(self.arrow, size)
-            self.hand = pygame.transform.scale(self.hand, size)
-
-    def draw(self, screen: pygame.Surface, x: float, y: float, elapsed: float, hovered: bool) -> None:
-        screen.blit(self.hand if hovered else self.arrow, (round(x), round(y)))
+    def draw(self, screen, x, y, elapsed, hovered):
+        screen.blit(self.image, (round(x) - self.hotspot[0], round(y) - self.hotspot[1]))

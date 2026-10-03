@@ -13,7 +13,7 @@ SHADOW = (153, 124, 113)
 
 
 def draw_options(app, pointer: tuple[float, float]) -> None:
-    app.popup(pygame.Rect(27, 16, 138, 82))
+    app.popup(pygame.Rect(27, 16, 138, 91))
     app.text("OPTIONS", (96, 26), title=True)
     pygame.draw.line(app.canvas, INK, (38, 34), (154, 34))
     app.text(f"MUSIC  {round(app.options['volume'] * 100)}%", (96, 42))
@@ -27,17 +27,30 @@ def draw_options(app, pointer: tuple[float, float]) -> None:
     app.text("FULLSCREEN", (72, 67))
     app.button(pygame.Rect(120, 60, 34, 13), "ON" if app.options["fullscreen"] else "OFF", pointer)
     app.button(pygame.Rect(68, 79, 56, 13), "SAVE & BACK", pointer)
+    volume = app.options['typing_volume']
+    label = 'OFF' if volume == 0 else f'{round(volume * 100)}%'
+    app.button(pygame.Rect(38, 94, 116, 10), f'TYPING SOUND: {label}', pointer)
 
 
 def draw_dialogue(app, pointer: tuple[float, float]) -> None:
-    title, *lines = app.dialogue.current
-    app.popup(pygame.Rect(17, 22, 158, 64))
-    app.text(title, (96, 33), title=True)
-    pygame.draw.line(app.canvas, INK, (28, 41), (164, 41))
-    for y, line in zip((51, 60, 69, 78), lines):
-        app.text(line, (96, y))
-    label = "CONTINUE" if not app.dialogue.is_last_page else "BACK TO MENU"
-    app.button(pygame.Rect(63, 89, 66, 13), label, pointer)
+    """A bottom-anchored visual novel textbox, leaving the scene unobscured."""
+    title = app.dialogue.current[0]
+    lines = app.dialogue.visible_lines
+    box = pygame.Rect(18, 78, 156, 27)
+    pygame.draw.rect(app.canvas, SHADOW, box.move(1, 1))
+    pygame.draw.rect(app.canvas, DARK, box)
+    pygame.draw.rect(app.canvas, PAPER, box.inflate(-2, -2))
+    pygame.draw.line(app.canvas, (255, 255, 255), (20, 80), (171, 80))
+    nameplate = pygame.Rect(22, 69, 72, 10)
+    pygame.draw.rect(app.canvas, DARK, nameplate)
+    pygame.draw.rect(app.canvas, HOVER, nameplate.inflate(-2, -2))
+    app.text(title, (26, 74), anchor="midleft", small=True, larger=True)
+    for y, line in zip((86, 94, 102), lines):
+        app.text(line, (23, y), anchor="midleft", small=True, larger=True)
+    # A small breathing advance marker replaces the modal's separate button.
+    offset = int(app.elapsed * 2) % 2
+    pygame.draw.polygon(app.canvas, ACCENT,
+                        ((164, 101 + offset), (168, 101 + offset), (166, 103 + offset)))
 
 
 def draw_no_save(app, pointer: tuple[float, float]) -> None:

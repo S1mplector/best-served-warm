@@ -22,3 +22,26 @@ The root MIT license covers the project code. Asset rights are described above.
 
 - `assets/cursor/megabyte/cursor-pointer-1.png` and `cursor-pointer-5.png`: cursor sprites from Megabyte Games, [Mouse Cursor Pack](https://megabyte-games.itch.io/mouse-cursor-pack), CC0. The pack ZIP is retained in `../outputs/itch-free-assets/` for research.
 - `assets/cat/grey-walk.png`: four 16x16 walking frames selected from the grey sheet in Pop Shop Packs, [Cat || Pixel Asset Pack](https://pop-shop-packs.itch.io/tiny-cat-pixel-asset-pack). Listing permits personal/commercial projects and modifications; it prohibits redistributing the source pack as a standalone asset. Credit is appreciated. The full source ZIP is retained in `../outputs/itch-free-assets/` for research.
+
+# Current music and UI audio
+
+- `assets/audio/chill-lofi.mp3`: “Chill lofi inspired” by omfgdude, https://opengameart.org/node/74097 . CC0: https://creativecommons.org/publicdomain/zero/1.0/ . Downloaded the creator's low-pass-filtered MP3 version; replaces Moon Unit in runtime playback, with reduced music gain.
+- `assets/audio/ui/*.ogg`: selected tick, click, back, switch, and select sounds from Kenney Interface Sounds, https://kenney.nl/assets/interface-sounds . CC0; original license included at `assets/audio/ui/LICENSE.txt`. Hover feedback is entry-triggered; all cues are reduced in volume.
+
+- `assets/cursor/cozy-source.png`: generated with the built-in imagegen tool for this project. Prompt: single northwest arrow for a cozy cafe pixel-art game, cocoa outline, cream fill, caramel highlight, chunky stepped edges, transparent background, no text or extra objects. `cozy.png` is the cropped runtime source; `cozy-wiggle.png` contains four frames from the in-project Python line-boil renderer with original alpha restored.
+- `assets/audio/ui/type.wav`: original synthesized soft retro typing tone generated in Python for this project.
+
+- `assets/cursor/cozy-smooth.png`: generated with the built-in imagegen tool. Prompt: a conventional northwest arrow for a cozy cafe game, smooth anti-aliased silhouette, cocoa outline, cream fill, caramel accent, transparent background; no pixel art or text. Current runtime cursor, displayed at window resolution with smooth filtering and no animation.
+
+- `assets/fonts/PixelifySans.ttf`: Pixelify Sans by the Pixelify Sans Project Authors, https://github.com/eifetx/Pixelify-Sans ; downloaded from Google Fonts. SIL Open Font License 1.1 included in `assets/fonts/OFL.txt`. Used for all runtime menu and dialogue text.
+
+- `assets/cat/grey-rest.png`: four side-view sitting/rest poses from the same Pop Shop Packs grey cat sheet, under the cat pack terms above. Used for settling down, naps, and waking up.
+
+- `assets/cat/white-sleep.png`: white side-view crouch pose adapted from Pop Shop Packs Tiny Cat with a closed eyelid. Same cat-pack terms apply. Permanently perched on the Served title; independent from wandering-cat AI.
+
+- Current font: `assets/fonts/Jersey20-Regular.ttf`, Jersey 20 by Sarah Cadigan-Fried / Soft Type Project Authors, from https://github.com/google/fonts/tree/main/ofl/jersey20 . SIL OFL 1.1, included as `Jersey20-OFL.txt`. Replaces Pixelify Sans in runtime menus and dialogue.
+
+- Current font: `assets/fonts/m5x7.ttf`, m5x7 by Daniel Linssen, downloaded from https://managore.itch.io/m5x7 . Listing declares CC0; attribution appreciated. Use only the creator’s specified sizes 16, 32, 48, etc. Runtime uses 16 for dialogue and 32 for menu text, followed only by integer scaling.
+# User-provided artwork
+
+- `assets/images/new_game_background.png`: supplied by the user in this conversation for use as the New Game scene background. No external license or attribution requirement was provided.

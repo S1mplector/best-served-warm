@@ -1,5 +1,4 @@
-"""Music playback and frequency measurements from the same bundled WAV."""
-import wave
+"""Music playback and frequency measurements from the bundled lo-fi track."""
 import numpy as np
 import pygame
 from .paths import asset_path
@@ -7,24 +6,25 @@ from .paths import asset_path
 
 class Music:
     def __init__(self, analyze: bool = False):
-        self.path = asset_path("audio", "moon-unit.wav")
+        self.path = asset_path("audio", "chill-lofi.mp3")
         self.energies = None
-        if analyze:
-            self._analyze()
         self.available = False
         try:
             pygame.mixer.init(frequency=22050, size=-16, channels=1)
             pygame.mixer.music.load(str(self.path))
             pygame.mixer.music.play(-1, fade_ms=2400)
             self.available = True
+            if analyze:
+                self._analyze()
         except pygame.error:
             pass
 
     def _analyze(self) -> None:
-        with wave.open(str(self.path), "rb") as source:
-            sample_rate = source.getframerate()
-            assert source.getnchannels() == 1 and source.getsampwidth() == 2
-            samples = np.frombuffer(source.readframes(source.getnframes()), dtype="<i2").astype(np.float32) / 32768.0
+        sound = pygame.mixer.Sound(str(self.path))
+        samples = pygame.sndarray.array(sound).astype(np.float32) / 32768.0
+        if samples.ndim == 2:
+            samples = samples.mean(axis=1)
+        sample_rate = pygame.mixer.get_init()[0]
         self.duration = len(samples) / sample_rate
         self.hop = 1024
         self.rate = sample_rate / self.hop
@@ -42,7 +42,7 @@ class Music:
 
     def set_volume(self, volume: float) -> None:
         if self.available:
-            pygame.mixer.music.set_volume(volume)
+            pygame.mixer.music.set_volume(max(0.0, min(1.0, volume)) * 0.55)
 
     def levels(self) -> np.ndarray:
         if self.energies is None or not self.available or not pygame.mixer.music.get_busy():

@@ -21,6 +21,7 @@
 - Use `art_sources/*.json` as editable source. Run `python -m best_served_warm.pixel_art art_sources/coffee_cup.json assets/pixel/coffee_cup.png --preview ../outputs/coffee_cup_preview.png --scale 8` with the project environment. This renders hard native pixels and a nearest-neighbor preview without a GUI.
 - Supported ordered operations are `pixel`, `rect`, `line`, `ellipse`, and `polygon`, with named palette colors. To edit an existing native-resolution PNG, set `base_image` to its path relative to the JSON file, then add overlay layers (a transparent palette color can erase pixels). Draw at native 16x16 or 32x32 rather than filtering a smooth picture. Source JSON should be committed beside resulting game PNGs.
 - The user's girlfriend supplied the new **192x108** pixel-art main menu, now stored as `assets/images/main_menu.png`. Keep it unfiltered and do not draw the old logo, button assets, footer, or cursor over it. The old `assets/images/background.png` is retained only behind the existing options/game screens, whose styling the user allowed to stay.
+- The user supplied a **320x180** pixel-art cafe scene in `assets/images/new_game_background.png`. On New Game, show this scene without UI first; the first click or Space/Enter reveals the dialogue box. Keep this scene full-screen and use nearest-neighbor scaling to the 192x108 game canvas.
 
 ## Free asset research handoff
 
@@ -34,3 +35,17 @@ Search itch.io for pixel-art cafe/barista/interior packs plus food, drinks, coff
 - [Cozy Starter](https://gegx.itch.io/cozy-starter) by GegX remains available in `assets/ui/cozy_starter/` for options and gameplay UI. The new main menu uses only the user's supplied artwork. The pack allows commercial game use but prohibits standalone asset-pack resale.
 
 These are research leads, not imported assets. Search results did not reliably honor free-price query filtering, so inspect the exact pack page and download terms each time. Add cafe-specific food/coffee candidates here as they are found.
+
+## Text rendering and menu cat
+
+- m5x7 by Daniel Linssen (itch.io, CC0) is the current UI/dialogue font, bundled in `assets/fonts/`. Render labels on a window-sized transparent overlay, at integer glyph scale with uniform X/Y scaling. Never stretch the composed text layer with the low-resolution artwork; map only its positions to the window.
+- Cat behavior in `cat.py` includes sideways walking, platform jumps, settling, randomized 6–14 second naps, and waking. Keep paws stationary during naps and preserve the cooldown before another nap.
+
+- m5x7 must be rasterized at 16px or exact multiples of 16, as instructed by its creator. Never choose arbitrary font sizes or stretch glyphs to fit.
+
+## Bakery environment shortlist (2026-10-03)
+
+- Recommended full environment: **LimeZu Modern Interiors**, https://limezu.itch.io/moderninteriors . Full pack $1.50, native 16x16 plus 32/48 variants; modular floors/walls, bakery, kitchens, thousands of props and animated objects. Best match to our 16px environment grid. Commercial use and edits allowed; credit LimeZu, no standalone redistribution. Free sample is limited: do not assume it includes the bakery or full license. Not purchased.
+- Best focused bakery: **GuttyKreum Japan Collection: Bakery Interior**, https://guttykreum.itch.io/bakery . $4.99, 358 32x32 tiles, breads/cakes/tarts, ovens, animated chocolate fountain; PNG tilemap and Unity/RPG Maker imports. Commercial game use allowed; assets cannot be redistributed separately. Use a 32px gameplay grid if selected, not destructive downsampling. Not purchased.
+- Free prototype choice: **HelloRumin Neko Cafe**, https://hellorumin.itch.io/neko-cafe-asset-pack . Already downloaded in the local research catalog; 16x16 floors/walls, furniture/oven, six pastries and animated cats. Free commercial use and modifications allowed; credit HelloRumin; no raw-pack redistribution. Smaller scope than the paid options.
+- Alternative: **AbyssalHunter 300+ Cafe Interiors**, https://abyssalhunter.itch.io/cafe . $6; bakery theme, 48x48 floors/walls and 128x128 decoration canvases. Commercial use and edits allowed; no standalone redistribution. Richer scale requires a deliberate gameplay resolution change, so lower priority than the grid-compatible choices. Not purchased.

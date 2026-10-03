@@ -25,6 +25,10 @@ class NativeMenu:
         if image.size != MENU_SIZE:
             raise ValueError(f"main menu must be {MENU_SIZE}, got {image.size}")
         self.base = pygame.image.frombytes(image.tobytes(), image.size, "RGBA").convert_alpha()
+        # Permanent title resident; never participates in the wandering AI.
+        sleeper = pygame.image.load(str(asset_path("cat", "white-sleep.png"))).convert_alpha()
+        feet = sleeper.get_bounding_rect().bottom
+        self.base.blit(sleeper, (109, 23 - feet))
         self.hover = {action: 0.0 for action in BUTTON_RECTS}
         self.tiles: dict[str, list[pygame.Surface]] = {}
         for action, rect in BUTTON_RECTS.items():

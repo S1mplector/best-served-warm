@@ -39,7 +39,12 @@ def load_options() -> dict:
         volume = float(raw.get("volume", DEFAULT_OPTIONS["volume"]))
     except (TypeError, ValueError):
         volume = DEFAULT_OPTIONS["volume"]
+    try:
+        typing_volume = max(0.0, min(1.0, float(raw.get("typing_volume", 0.5))))
+    except (TypeError, ValueError):
+        typing_volume = 0.5
     return {
+        "typing_volume": typing_volume,
         "volume": max(0.0, min(1.0, volume)),
         "visualizer": raw.get("visualizer") is not False,
         "fullscreen": raw.get("fullscreen") is True,
