@@ -1,170 +1,157 @@
-"""Pygame application: menu, first playable cafe day, and options."""
+"""Pixel-art cafe menu with low-resolution art and a crisp text overlay."""
+
+from __future__ import annotations
+
 import pygame
-from .art import AnimatedButton, AnimatedCursor, load_image
+
+from .art import AnimatedCursor
+from .cat import MenuCat
+from .dialogue import Dialogue
+from .menu import MENU_SIZE, NativeMenu
 from .music import Music
-from .storage import DRINKS, load_game, load_options, new_game, save_game, save_options
+from .screens import ACCENT, DARK, HOVER, INK, PAPER, SHADOW
+from .screens import draw_dialogue, draw_options, draw_no_save
+from .storage import load_options, save_options
 
-WIDTH, HEIGHT = 1280, 720
-INK = (89, 47, 30)
-CREAM = (255, 239, 213)
-AMBER = (184, 91, 53)
-
-
-def label(surface, font, value, center, color=INK):
-    text = font.render(value, True, color)
-    surface.blit(text, text.get_rect(center=center))
-
-
+TEXT_SCALE = 3
 class App:
-    def __init__(self):
+    def __init__(self) -> None:
         pygame.init()
         self.options = load_options()
-        flags = pygame.RESIZABLE | (pygame.FULLSCREEN if self.options["fullscreen"] else 0)
-        self.window = pygame.display.set_mode((WIDTH, HEIGHT), flags)
+        self.window = self._set_window()
         pygame.display.set_caption("Best Served Warm")
-        self.canvas = pygame.Surface((WIDTH, HEIGHT)).convert_alpha()
+        self.canvas = pygame.Surface(MENU_SIZE).convert_alpha()
+        self.text_layer = pygame.Surface((MENU_SIZE[0] * TEXT_SCALE, MENU_SIZE[1] * TEXT_SCALE), pygame.SRCALPHA)
+        self.frame = pygame.Surface(self.text_layer.get_size()).convert_alpha()
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.SysFont("georgia", 30)
-        self.small = pygame.font.SysFont("georgia", 23)
-        self.big = pygame.font.SysFont("georgia", 48, bold=True)
-        self.background = pygame.transform.smoothscale(load_image("images", "background.png"), (WIDTH, HEIGHT))
-        logo = load_image("images", "logo.png")
-        self.logo = pygame.transform.smoothscale(logo, (520, round(logo.get_height()*520/logo.get_width())))
-        self.buttons = {
-            "new": AnimatedButton("new-game", (640, 318)),
-            "load": AnimatedButton("load-game", (640, 414)),
-            "options": AnimatedButton("options", (640, 510)),
-            "exit": AnimatedButton("exit-game", (640, 606)),
-        }
-        self.cursor = AnimatedCursor()
+        # Render glyphs at 3x the art resolution, then composite over nearest-neighbour pixels.
+        self.font = pygame.font.Font(None, 30)
+        self.heading = pygame.font.Font(None, 36)
+        self.menu = NativeMenu()
+        self.cursor = AnimatedCursor(width=10)
+        self.cat = MenuCat()
         pygame.mouse.set_visible(False)
         self.music = Music()
         self.music.set_volume(self.options["volume"])
         self.state = "menu"
-        self.game = None
+        self.dialogue = Dialogue()
         self.message = ""
         self.message_until = 0.0
         self.elapsed = 0.0
+        self.frame_dt = 0.0
         self.running = True
 
-    def notify(self, message: str):
-        self.message = message
-        self.message_until = self.elapsed + 3
+    def _set_window(self) -> pygame.Surface:
+        if self.options["fullscreen"]:
+            return pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        return pygame.display.set_mode((1152, 648), pygame.RESIZABLE)
 
-    def pointer(self, screen_pos):
-        ww, wh = self.window.get_size()
-        scale = min(ww/WIDTH, wh/HEIGHT)
-        ox, oy = (ww-WIDTH*scale)/2, (wh-HEIGHT*scale)/2
-        return ((screen_pos[0]-ox)/scale, (screen_pos[1]-oy)/scale)
+    def pointer(self, screen_pos: tuple[int, int]) -> tuple[float, float]:
+        width, height = self.window.get_size()
+        return screen_pos[0] * MENU_SIZE[0] / width, screen_pos[1] * MENU_SIZE[1] / height
 
-    def click(self, pos):
-        x,y = pos
+    def text(self, value: str, center: tuple[int, int], *, title: bool = False,
+             color: tuple[int, int, int] = DARK) -> None:
+        font = self.heading if title else self.font
+        glyphs = font.render(value, False, color)
+        rect = glyphs.get_rect(center=(center[0] * TEXT_SCALE, center[1] * TEXT_SCALE))
+        self.text_layer.blit(glyphs, rect)
+
+    def popup(self, rect: pygame.Rect) -> None:
+        shade = pygame.Surface(MENU_SIZE, pygame.SRCALPHA)
+        shade.fill((74, 42, 35, 65))
+        self.canvas.blit(shade, (0, 0))
+        pygame.draw.rect(self.canvas, SHADOW, rect.move(2, 2))
+        pygame.draw.rect(self.canvas, DARK, rect)
+        pygame.draw.rect(self.canvas, PAPER, rect.inflate(-2, -2))
+        pygame.draw.line(self.canvas, (255, 255, 255),
+                         (rect.left + 2, rect.top + 2), (rect.right - 3, rect.top + 2))
+
+    def button(self, rect: pygame.Rect, value: str, pointer: tuple[float, float]) -> None:
+        hovered = rect.collidepoint(pointer)
+        fill = (255, 221, 185) if hovered else HOVER
+        pygame.draw.rect(self.canvas, SHADOW, rect.move(1, 1))
+        pygame.draw.rect(self.canvas, INK, rect)
+        pygame.draw.rect(self.canvas, fill, rect.inflate(-2, -2))
+        self.text(value, rect.center, color=ACCENT if hovered else DARK)
+
+    def start_dialogue(self) -> None:
+        self.dialogue = Dialogue()
+        self.state = "dialogue"
+
+    def click(self, point: tuple[float, float]) -> None:
+        x, y = point
         if self.state == "menu":
-            for action, button in self.buttons.items():
-                if button.rect.collidepoint(x,y):
-                    if action == "new":
-                        self.game = new_game();self.state = "game"
-                    elif action == "load":
-                        self.game = load_game()
-                        if self.game is None:self.notify("No saved game yet. Choose New Game.")
-                        else:self.state = "game"
-                    elif action == "options":self.state = "options"
-                    else:self.running = False
-                    return
+            action = self.menu.button_at(point)
+            if action == "new":
+                self.start_dialogue()
+            elif action == "load":
+                self.state = "no_save"
+            elif action == "options":
+                self.state = "options"
+            elif action == "exit":
+                self.running = False
         elif self.state == "options":
-            if pygame.Rect(360,275,560,75).collidepoint(x,y):
-                self.options["volume"] = round(max(0,min(1,(x-420)/440)),2)
+            if pygame.Rect(39, 47, 114, 11).collidepoint(x, y):
+                self.options["volume"] = round(max(0.0, min(1.0, (x - 39) / 113)), 2)
                 self.music.set_volume(self.options["volume"])
-            elif pygame.Rect(360,360,560,75).collidepoint(x,y):
+            elif pygame.Rect(120, 60, 34, 13).collidepoint(x, y):
                 self.options["fullscreen"] = not self.options["fullscreen"]
-                flags = pygame.RESIZABLE | (pygame.FULLSCREEN if self.options["fullscreen"] else 0)
-                self.window = pygame.display.set_mode((WIDTH,HEIGHT),flags)
-            elif pygame.Rect(480,580,320,64).collidepoint(x,y):
-                save_options(self.options);self.state="menu"
-        elif self.state == "game":
-            if pygame.Rect(60,46,220,60).collidepoint(x,y):
-                save_game(self.game);self.state="menu"
-            for index, drink in enumerate(DRINKS):
-                if pygame.Rect(280+index*250,360,220,95).collidepoint(x,y):
-                    self.game["selected"]=drink
-            if pygame.Rect(475,500,330,90).collidepoint(x,y):
-                self.game["score"]+=10
-                self.game["served"]+=1
-                self.game["day"]=1+self.game["served"]//5
-                save_game(self.game)
-                self.notify(f"One warm {self.game['selected'].lower()} served!")
+                self.window = self._set_window()
+            elif pygame.Rect(68, 79, 56, 13).collidepoint(x, y):
+                save_options(self.options)
+                self.state = "menu"
+        elif self.state == "no_save":
+            if pygame.Rect(46, 63, 45, 12).collidepoint(x, y):
+                self.start_dialogue()
+            elif pygame.Rect(101, 63, 45, 12).collidepoint(x, y):
+                self.state = "menu"
+        elif self.state == "dialogue":
+            if self.dialogue.advance():
+                self.state = "menu"
 
-    def panel(self, rect, fill=(255,238,210,225)):
-        box = pygame.Surface((rect.width,rect.height),pygame.SRCALPHA)
-        pygame.draw.rect(box,fill,box.get_rect(),border_radius=24)
-        pygame.draw.rect(box,(110,62,41,230),box.get_rect(),width=4,border_radius=24)
-        self.canvas.blit(box,rect.topleft)
-
-    def draw_menu(self):
-        self.canvas.blit(self.logo,self.logo.get_rect(center=(640,154)))
-        mouse = self.pointer(pygame.mouse.get_pos())
-        for button in self.buttons.values():
-            button.draw(self.canvas,self.elapsed,button.rect.collidepoint(mouse))
-
-    def draw_options(self):
-        self.panel(pygame.Rect(310,150,660,520))
-        label(self.canvas,self.big,"Options",(640,220))
-        label(self.canvas,self.font,f"Music volume   {round(self.options['volume']*100)}%",(640,310))
-        pygame.draw.line(self.canvas,INK,(420,345),(860,345),6)
-        pygame.draw.circle(self.canvas,AMBER,(420+round(440*self.options["volume"]),345),15)
-        label(self.canvas,self.font,"Fullscreen: " + ("On" if self.options["fullscreen"] else "Off"),(640,405))
-        self.panel(pygame.Rect(480,580,320,64))
-        label(self.canvas,self.font,"Save & Back",(640,612))
-
-    def draw_game(self):
-        self.panel(pygame.Rect(45,36,1190,610))
-        self.panel(pygame.Rect(60,46,220,60));label(self.canvas,self.small,"Save & Menu",(170,76))
-        label(self.canvas,self.big,"A warm order",(640,167))
-        label(self.canvas,self.font,f"Day {self.game['day']}  -  Cups served {self.game['served']}  -  Score {self.game['score']}",(640,232))
-        label(self.canvas,self.font,"Choose a drink, then serve it:",(640,300))
-        for index,drink in enumerate(DRINKS):
-            rect=pygame.Rect(280+index*250,360,220,95)
-            self.panel(rect,(255,222,177,245) if drink==self.game["selected"] else (255,238,210,225))
-            label(self.canvas,self.font,drink,rect.center)
-        self.panel(pygame.Rect(475,500,330,90),(255,222,177,245))
-        label(self.canvas,self.font,"Serve warm  +10",(640,545))
-
-    def draw(self):
-        self.canvas.blit(self.background,(0,0))
-        if self.state=="menu":
-            self.draw_menu()
-        elif self.state=="options":self.draw_options()
-        else:self.draw_game()
-        if self.message and self.elapsed<self.message_until:
-            label(self.canvas,self.small,self.message,(640,660))
-        if self.elapsed<2.0:
-            veil=pygame.Surface((WIDTH,HEIGHT));veil.fill((32,17,13));veil.set_alpha(round(255*(1-self.elapsed/2)**2));self.canvas.blit(veil,(0,0))
-        mouse = self.pointer(pygame.mouse.get_pos())
-        if 0 <= mouse[0] < WIDTH and 0 <= mouse[1] < HEIGHT:
-            hovered = self.state == "menu" and any(button.rect.collidepoint(mouse) for button in self.buttons.values())
-            self.cursor.draw(self.canvas, *mouse, self.elapsed, hovered)
-        ww,wh=self.window.get_size();scale=min(ww/WIDTH,wh/HEIGHT)
-        w,h=round(WIDTH*scale),round(HEIGHT*scale)
-        self.window.fill((35,19,13))
-        self.window.blit(pygame.transform.smoothscale(self.canvas,(w,h)),((ww-w)//2,(wh-h)//2))
+    def draw(self) -> None:
+        pointer = self.pointer(pygame.mouse.get_pos())
+        self.text_layer.fill((0, 0, 0, 0))
+        if self.state == "menu":
+            self.menu.draw(self.canvas, pointer, self.frame_dt)
+            self.cat.draw(self.canvas, self.elapsed)
+        else:
+            self.canvas.blit(self.menu.base, (0, 0))
+            if self.state == "options":
+                draw_options(self, pointer)
+            elif self.state == "no_save":
+                draw_no_save(self, pointer)
+            else:
+                draw_dialogue(self, pointer)
+        if 0 <= pointer[0] < MENU_SIZE[0] and 0 <= pointer[1] < MENU_SIZE[1]:
+            self.cursor.draw(self.canvas, *pointer, self.elapsed, self.state == "menu" and self.menu.button_at(pointer) is not None)
+        pygame.transform.scale(self.canvas, self.frame.get_size(), self.frame)
+        self.frame.blit(self.text_layer, (0, 0))
+        pygame.transform.scale(self.frame, self.window.get_size(), self.window)
         pygame.display.flip()
 
-    def run(self):
+    def run(self) -> None:
         while self.running:
-            dt=min(self.clock.tick(60)/1000,0.1);self.elapsed+=dt
+            self.frame_dt = min(self.clock.tick(60) / 1000, 0.1)
+            self.elapsed += self.frame_dt
             for event in pygame.event.get():
-                if event.type==pygame.QUIT:self.running=False
-                elif event.type==pygame.MOUSEBUTTONDOWN and event.button==1:self.click(self.pointer(event.pos))
-                elif event.type==pygame.KEYDOWN:
-                    if event.key==pygame.K_ESCAPE:
-                        if self.state=="menu":self.running=False
-                        elif self.state=="game":save_game(self.game);self.state="menu"
-                        else:save_options(self.options);self.state="menu"
+                if event.type == pygame.QUIT:
+                    self.running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    self.click(self.pointer(event.pos))
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    if self.state in ("menu", "dialogue"):
+                        self.state = "menu"
+                    else:
+                        if self.state == "options":
+                            save_options(self.options)
+                        self.state = "menu"
             self.draw()
         self.music.close()
         pygame.mouse.set_visible(True)
         pygame.quit()
 
 
-def main():
+def main() -> None:
     App().run()

@@ -15,6 +15,8 @@ test = ["pytest>=8,<10"]
 
 [project.scripts]
 best-served-warm = "best_served_warm.app:main"
+best-served-warm-render-gif = "best_served_warm.lineboil:main"
+best-served-warm-pixel-art = "best_served_warm.pixel_art:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
