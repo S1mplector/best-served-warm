@@ -1,0 +1,36 @@
+name: Build and test
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            label: linux
+          - os: windows-latest
+            label: windows
+          - os: macos-latest
+            label: macos
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install ".[build,test]"
+      - name: Test
+        run: python -m pytest -q
+      - name: Package
+        run: pyinstaller --noconfirm BestServedWarm.spec
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: best-served-warm-${{ matrix.label }}
+          path: dist/
+          if-no-files-found: error

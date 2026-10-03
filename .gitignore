@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+build/
+dist/
+*.spec
+*.pyc
+.DS_Store
+menu-preview.png
+game-preview.png
+!BestServedWarm.spec
+*.egg-info/

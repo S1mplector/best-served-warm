@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "best-served-warm"
+version = "0.1.0"
+description = "A cozy cafe game with a music-reactive menu"
+requires-python = ">=3.11"
+dependencies = ["pygame-ce>=2.5,<3", "Pillow>=10,<13", "numpy>=1.26,<3"]
+
+[project.optional-dependencies]
+build = ["pyinstaller>=6,<7"]
+test = ["pytest>=8,<10"]
+
+[project.scripts]
+best-served-warm = "best_served_warm.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
