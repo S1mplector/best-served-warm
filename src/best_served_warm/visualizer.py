@@ -22,11 +22,12 @@ class Visualizer:
         if not enabled:
             return
         for i, value in enumerate(self.smoothed):
-            height = max(12, round(16 + 84 * float(value)))
+            height = max(12, round(84 + 185 * float(value)))
             # Quantizing dimensions keeps the sprite cache small without making motion jerky.
             height = 2 * round(height / 2)
-            key = (9, height)
+            key = (24, height)
             if key not in self.scaled:
                 self.scaled[key] = pygame.transform.smoothscale(self.sprite, key)
+                self.scaled[key].set_alpha(150)
             bar = self.scaled[key]
-            screen.blit(bar, (x+i*12, bottom-height))
+            screen.blit(bar, (x+i*45, bottom-height))

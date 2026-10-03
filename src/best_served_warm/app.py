@@ -137,11 +137,11 @@ class App:
 
     def draw(self):
         self.canvas.blit(self.background,(0,0))
-        if self.state=="menu":self.draw_menu()
+        if self.state=="menu":
+            self.visualizer.draw(self.canvas,22,704,self.elapsed,self.options["visualizer"])
+            self.draw_menu()
         elif self.state=="options":self.draw_options()
         else:self.draw_game()
-        if self.state=="menu":
-            self.visualizer.draw(self.canvas,907,640,self.elapsed,self.options["visualizer"])
         if self.message and self.elapsed<self.message_until:
             label(self.canvas,self.small,self.message,(640,660))
         if self.elapsed<2.0:
