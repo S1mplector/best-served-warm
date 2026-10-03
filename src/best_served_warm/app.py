@@ -12,7 +12,7 @@ from .paths import asset_path
 from .music import Music
 from .sfx import SoundEffects
 from .screens import ACCENT, DARK, HOVER, INK, PAPER, SHADOW
-from .screens import draw_dialogue, draw_options, draw_no_save
+from .screens import draw_dialogue, draw_loading, draw_options, draw_no_save
 from .storage import load_options, save_options
 
 TEXT_SCALE = 3
@@ -23,8 +23,10 @@ class App:
         self.window = self._set_window()
         pygame.display.set_caption("Best Served Warm")
         self.canvas = pygame.Surface(MENU_SIZE).convert_alpha()
-        scene_image = pygame.image.load(str(asset_path("images", "new_game_background.png"))).convert()
-        self.scene_background = pygame.transform.scale(scene_image, MENU_SIZE)
+        self.scene_background = pygame.image.load(str(asset_path("images", "new_game_background.png"))).convert()
+        self.scene_window = pygame.transform.scale(self.scene_background, self.window.get_size())
+        self.scene_window_size = self.window.get_size()
+        self.loading_cat = pygame.image.load(str(asset_path("cat", "white-sleep.png"))).convert_alpha()
         self.text_layer = pygame.Surface(self.window.get_size(), pygame.SRCALPHA)
         self.clock = pygame.time.Clock()
         # Rasterize the pixel font once; enlarge glyphs only by whole-number factors.
@@ -43,6 +45,8 @@ class App:
         self.message = ""
         self.message_until = 0.0
         self.elapsed = 0.0
+        self.loading_elapsed = 0.0
+        self.scene_fade = 1.0
         self.frame_dt = 0.0
         self.running = True
 
@@ -93,7 +97,9 @@ class App:
 
     def start_dialogue(self) -> None:
         self.dialogue = Dialogue()
-        self.state = "intro_scene"
+        self.loading_elapsed = 0.0
+        self.scene_fade = 0.0
+        self.state = "loading"
 
     def click(self, point: tuple[float, float]) -> None:
         self.sfx.click(self.state, point)
@@ -128,7 +134,8 @@ class App:
             elif pygame.Rect(101, 63, 45, 12).collidepoint(x, y):
                 self.state = "menu"
         elif self.state == "intro_scene":
-            self.state = "dialogue"
+            if self.scene_fade >= 1.0:
+                self.state = "dialogue"
         elif self.state == "dialogue":
             if self.dialogue.advance():
                 self.state = "menu"
@@ -142,19 +149,33 @@ class App:
         if self.state == "menu":
             self.menu.draw(self.canvas, pointer, self.frame_dt)
             self.cat.draw(self.canvas, self.frame_dt)
-        elif self.state == "intro_scene":
-            self.canvas.blit(self.scene_background, (0, 0))
+        elif self.state == "loading":
+            draw_loading(self)
+        elif self.state in ("intro_scene", "dialogue"):
+            window_size = self.window.get_size()
+            if self.scene_window_size != window_size:
+                self.scene_window = pygame.transform.scale(self.scene_background, window_size)
+                self.scene_window_size = window_size
+            self.window.blit(self.scene_window, (0, 0))
+            if self.state == "dialogue":
+                self.canvas.fill((0, 0, 0, 0))
+                draw_dialogue(self, pointer)
+                self.window.blit(pygame.transform.scale(self.canvas, window_size), (0, 0))
+            elif self.scene_fade < 1.0:
+                fade = pygame.Surface(window_size)
+                fade.fill((0, 0, 0))
+                fade.set_alpha(round(255 * (1.0 - self.scene_fade)))
+                self.window.blit(fade, (0, 0))
         else:
             self.canvas.blit(self.menu.base, (0, 0))
             if self.state == "options":
                 draw_options(self, pointer)
             elif self.state == "no_save":
                 draw_no_save(self, pointer)
-            else:
-                draw_dialogue(self, pointer)
-        pygame.transform.scale(self.canvas, self.window.get_size(), self.window)
+        if self.state not in ("intro_scene", "dialogue"):
+            pygame.transform.scale(self.canvas, self.window.get_size(), self.window)
         self.window.blit(self.text_layer, (0, 0))
-        if pygame.mouse.get_focused():
+        if pygame.mouse.get_focused() and self.state != "loading":
             self.cursor.draw(self.window, *pygame.mouse.get_pos(), self.elapsed,
                              self.state == "menu" and self.menu.button_at(pointer) is not None)
         pygame.display.flip()
@@ -163,6 +184,13 @@ class App:
         while self.running:
             self.frame_dt = min(self.clock.tick(60) / 1000, 0.1)
             self.elapsed += self.frame_dt
+            if self.state == "loading":
+                self.loading_elapsed += self.frame_dt
+                if self.loading_elapsed >= 1.0:
+                    self.state = "intro_scene"
+                    self.scene_fade = 0.0
+            elif self.state == "intro_scene":
+                self.scene_fade = min(1.0, self.scene_fade + self.frame_dt / 1.35)
             if self.state == 'dialogue' and self.dialogue.update(self.frame_dt):
                 self.sfx.typing(self.options['typing_volume'])
             for event in pygame.event.get():
@@ -174,13 +202,14 @@ class App:
                       and event.key in (pygame.K_SPACE, pygame.K_RETURN)):
                     self.sfx.play("advance")
                     if self.state == "intro_scene":
-                        self.state = "dialogue"
+                        if self.scene_fade >= 1.0:
+                            self.state = "dialogue"
                     elif self.dialogue.advance():
                         self.state = "menu"
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     if self.state != "menu":
                         self.sfx.play("back")
-                    if self.state in ("menu", "intro_scene", "dialogue"):
+                    if self.state in ("menu", "loading", "intro_scene", "dialogue"):
                         self.state = "menu"
                     else:
                         if self.state == "options":

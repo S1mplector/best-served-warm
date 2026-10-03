@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import math
+
 import pygame
 
 INK = (137, 87, 67)
@@ -33,7 +35,7 @@ def draw_options(app, pointer: tuple[float, float]) -> None:
 
 
 def draw_dialogue(app, pointer: tuple[float, float]) -> None:
-    """A bottom-anchored visual novel textbox, leaving the scene unobscured."""
+    """Draw a compact visual-novel textbox over the live bakery scene."""
     title = app.dialogue.current[0]
     lines = app.dialogue.visible_lines
     box = pygame.Rect(18, 78, 156, 27)
@@ -45,12 +47,32 @@ def draw_dialogue(app, pointer: tuple[float, float]) -> None:
     pygame.draw.rect(app.canvas, DARK, nameplate)
     pygame.draw.rect(app.canvas, HOVER, nameplate.inflate(-2, -2))
     app.text(title, (26, 74), anchor="midleft", small=True, larger=True)
-    for y, line in zip((86, 94, 102), lines):
+    for y, line in zip((84, 92, 100), lines):
         app.text(line, (23, y), anchor="midleft", small=True, larger=True)
     # A small breathing advance marker replaces the modal's separate button.
     offset = int(app.elapsed * 2) % 2
     pygame.draw.polygon(app.canvas, ACCENT,
                         ((164, 101 + offset), (168, 101 + offset), (166, 103 + offset)))
+
+
+def draw_loading(app) -> None:
+    """Minimal black loading screen with the sleeping cat and pixel spinner."""
+    app.canvas.fill((0, 0, 0))
+    cat_width = 32
+    cat_height = max(1, round(app.loading_cat.get_height() * cat_width / app.loading_cat.get_width()))
+    cat = pygame.transform.scale(app.loading_cat, (cat_width, cat_height))
+    app.canvas.blit(cat, cat.get_rect(center=(96, 44)))
+
+    center = (96, 73)
+    radius = 8
+    active = round(app.loading_elapsed * 9) % 8
+    for index in range(8):
+        angle = index * 3.14159265 / 4
+        x = round(center[0] + radius * math.cos(angle))
+        y = round(center[1] + radius * math.sin(angle))
+        distance = (index - active) % 8
+        brightness = max(72, 240 - distance * 24)
+        pygame.draw.rect(app.canvas, (brightness, brightness, brightness), (x, y, 2, 2))
 
 
 def draw_no_save(app, pointer: tuple[float, float]) -> None:
