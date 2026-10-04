@@ -45,3 +45,15 @@ The root MIT license covers the project code. Asset rights are described above.
 # User-provided artwork
 
 - `assets/images/new_game_background.png`: supplied by the user in this conversation for use as the New Game scene background. No external license or attribution requirement was provided.
+
+## Shared itch.io research packs
+
+These source files are kept intact under `assets/hoarded/` for project reference. They are not yet integrated into gameplay.
+
+- `assets/hoarded/bakery-sweetz-cc0.png`: Crumpaloo, [Free Bakery Sweet's Pack](https://crumpaloo.itch.io/free-bakery-sweets-pack), CC0 1.0. Nine 32x32 bakery sprites. Credit is optional.
+- `assets/hoarded/dessert-icons-cc-by-4.0.zip`: Lumin / Ellie Jerram, [Free Dessert Icons](https://luminleveret.itch.io/desserts), CC BY 4.0. Credit “Ellielza” and/or “Ellie Jerram” and link to the pack.
+- `assets/hoarded/pixel-art-bar-and-cafe-cc0.zip`: Karsiori Studio, [Free Pixel Art Bar and Cafe Items Pack](https://karsiori.itch.io/free-pixel-art-bar-and-cafe-items-pack), CC0. Credit is appreciated but not required.
+- `assets/hoarded/pixel-food-16x16-cc-by-4.0.zip`: alexkovacsart, [100 Free Pixel Art Foods](https://alexkovacsart.itch.io/free-pixel-art-foods), CC BY 4.0. Credit the creator and link to the pack.
+- `assets/hoarded/megabyte-mouse-cursors-cc0.zip`: Megabyte Games, [Mouse Cursor Pack](https://megabyte-games.itch.io/mouse-cursor-pack), CC0 1.0. Credit is optional.
+
+Other downloaded candidates remain in the local research folder, not this repository: the Yanin coffee sample, Food & Ingredients, Ghostpixxells Pixel Food, Neko Cafe, Cozy Starter, and Tiny Cat packs. Their listings restrict redistribution of the raw files or leave the scope unclear. Existing selected game assets already imported under their project-use terms are documented above.
