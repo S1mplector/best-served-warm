@@ -44,7 +44,7 @@ The root MIT license covers the project code. Asset rights are described above.
 - Current font: `assets/fonts/m5x7.ttf`, m5x7 by Daniel Linssen, downloaded from https://managore.itch.io/m5x7 . Listing declares CC0; attribution appreciated. Use only the creator’s specified sizes 16, 32, 48, etc. Runtime uses 16 for dialogue and 32 for menu text, followed only by integer scaling.
 # User-provided artwork
 
-- `assets/images/new_game_background.png`: supplied by the user in this conversation for use as the New Game scene background. No external license or attribution requirement was provided.
+- `assets/images/new_game_background.png`: `Bakery_PixelArt_MASTER_320x180.png`, supplied by the user on 2026-10-04 for the New Game scene background. No external license or attribution requirement was provided.
 
 ## Shared itch.io research packs
 
