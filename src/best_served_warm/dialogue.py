@@ -7,9 +7,6 @@ DIALOGUE = (
     ("A LITTLE WELCOME", "Lorem ipsum dolor sit amet, consectetur",
      "adipiscing elit. The kettle begins to sing.",
      "Outside, the rain turns soft and silver."),
-    ("YOUR FIRST ORDER", "Lorem ipsum dolor sit amet, consectetur",
-     "adipiscing elit. There is time to make",
-     "something lovely, one cup at a time."),
 )
 
 

@@ -6,6 +6,7 @@ import pygame
 
 from .art import Cursor
 from .cat import MenuCat
+from .coffee_station import CoffeeStation, STATION_SIZE
 from .dialogue import Dialogue
 from .menu import MENU_SIZE, NativeMenu
 from .paths import asset_path
@@ -26,6 +27,11 @@ class App:
         self.scene_background = pygame.image.load(str(asset_path("images", "new_game_background.png"))).convert()
         self.scene_window = pygame.transform.scale(self.scene_background, self.window.get_size())
         self.scene_window_size = self.window.get_size()
+        self.station_background = pygame.image.load(str(asset_path("images", "coffee_cup_station.png"))).convert()
+        self.station_window = pygame.transform.scale(self.station_background, self.window.get_size())
+        self.station_window_size = self.window.get_size()
+        self.station_overlay = pygame.Surface(STATION_SIZE, pygame.SRCALPHA)
+        self.coffee_station = CoffeeStation()
         self.loading_cat = pygame.image.load(str(asset_path("cat", "white-sleep.png"))).convert_alpha()
         self.text_layer = pygame.Surface(self.window.get_size(), pygame.SRCALPHA)
         self.clock = pygame.time.Clock()
@@ -46,6 +52,7 @@ class App:
         self.message_until = 0.0
         self.elapsed = 0.0
         self.loading_elapsed = 0.0
+        self.loading_target = "intro_scene"
         self.scene_fade = 1.0
         self.frame_dt = 0.0
         self.running = True
@@ -58,6 +65,9 @@ class App:
     def pointer(self, screen_pos: tuple[int, int]) -> tuple[float, float]:
         width, height = self.window.get_size()
         return screen_pos[0] * MENU_SIZE[0] / width, screen_pos[1] * MENU_SIZE[1] / height
+
+    def station_pointer(self, point: tuple[float, float]) -> tuple[float, float]:
+        return point[0] * STATION_SIZE[0] / MENU_SIZE[0], point[1] * STATION_SIZE[1] / MENU_SIZE[1]
 
     def text(self, value: str, center: tuple[int, int], *, title: bool = False,
              color: tuple[int, int, int] = DARK, anchor: str = "center", small: bool = False,
@@ -99,7 +109,21 @@ class App:
         self.dialogue = Dialogue()
         self.loading_elapsed = 0.0
         self.scene_fade = 0.0
+        self.loading_target = "intro_scene"
         self.state = "loading"
+
+    def start_cup_station(self) -> None:
+        self.loading_elapsed = 0.0
+        self.scene_fade = 0.0
+        self.loading_target = "cup_station"
+        self.coffee_station = CoffeeStation()
+        self.state = "loading"
+
+    def advance_dialogue(self) -> None:
+        if self.dialogue.page == 1 and self.dialogue.complete:
+            self.start_cup_station()
+        elif self.dialogue.advance():
+            self.state = "menu"
 
     def click(self, point: tuple[float, float]) -> None:
         self.sfx.click(self.state, point)
@@ -137,8 +161,9 @@ class App:
             if self.scene_fade >= 1.0:
                 self.state = "dialogue"
         elif self.state == "dialogue":
-            if self.dialogue.advance():
-                self.state = "menu"
+            self.advance_dialogue()
+        elif self.state == "cup_station":
+            self.coffee_station.click(self.station_pointer(point))
 
     def draw(self) -> None:
         pointer = self.pointer(pygame.mouse.get_pos())
@@ -151,17 +176,29 @@ class App:
             self.cat.draw(self.canvas, self.frame_dt)
         elif self.state == "loading":
             draw_loading(self)
-        elif self.state in ("intro_scene", "dialogue"):
+        elif self.state in ("intro_scene", "dialogue", "cup_station"):
+            background = self.station_background if self.state == "cup_station" else self.scene_background
             window_size = self.window.get_size()
-            if self.scene_window_size != window_size:
-                self.scene_window = pygame.transform.scale(self.scene_background, window_size)
-                self.scene_window_size = window_size
-            self.window.blit(self.scene_window, (0, 0))
+            if self.state == "cup_station":
+                if self.station_window_size != window_size:
+                    self.station_window = pygame.transform.scale(background, window_size)
+                    self.station_window_size = window_size
+                self.window.blit(self.station_window, (0, 0))
+                station_point = self.station_pointer(pointer)
+                overlay = self.coffee_station.draw(station_point)
+                self.window.blit(pygame.transform.scale(overlay, window_size), (0, 0))
+                self.text("CLICK A CUP, THEN THE COUNTER", (96, 102), small=True,
+                          color=(251, 224, 187))
+            else:
+                if self.scene_window_size != window_size:
+                    self.scene_window = pygame.transform.scale(background, window_size)
+                    self.scene_window_size = window_size
+                self.window.blit(self.scene_window, (0, 0))
             if self.state == "dialogue":
                 self.canvas.fill((0, 0, 0, 0))
                 draw_dialogue(self, pointer)
                 self.window.blit(pygame.transform.scale(self.canvas, window_size), (0, 0))
-            elif self.scene_fade < 1.0:
+            if self.state != "dialogue" and self.scene_fade < 1.0:
                 fade = pygame.Surface(window_size)
                 fade.fill((0, 0, 0))
                 fade.set_alpha(round(255 * (1.0 - self.scene_fade)))
@@ -172,7 +209,7 @@ class App:
                 draw_options(self, pointer)
             elif self.state == "no_save":
                 draw_no_save(self, pointer)
-        if self.state not in ("intro_scene", "dialogue"):
+        if self.state not in ("intro_scene", "dialogue", "cup_station"):
             pygame.transform.scale(self.canvas, self.window.get_size(), self.window)
         self.window.blit(self.text_layer, (0, 0))
         if pygame.mouse.get_focused() and self.state != "loading":
@@ -187,9 +224,9 @@ class App:
             if self.state == "loading":
                 self.loading_elapsed += self.frame_dt
                 if self.loading_elapsed >= 1.0:
-                    self.state = "intro_scene"
+                    self.state = self.loading_target
                     self.scene_fade = 0.0
-            elif self.state == "intro_scene":
+            elif self.state in ("intro_scene", "cup_station"):
                 self.scene_fade = min(1.0, self.scene_fade + self.frame_dt / 1.35)
             if self.state == 'dialogue' and self.dialogue.update(self.frame_dt):
                 self.sfx.typing(self.options['typing_volume'])
@@ -198,14 +235,16 @@ class App:
                     self.running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.click(self.pointer(event.pos))
+                elif event.type == pygame.MOUSEMOTION and self.state == "cup_station":
+                    self.coffee_station.move_pointer(self.station_pointer(self.pointer(event.pos)))
                 elif (event.type == pygame.KEYDOWN and self.state in ("intro_scene", "dialogue")
                       and event.key in (pygame.K_SPACE, pygame.K_RETURN)):
                     self.sfx.play("advance")
                     if self.state == "intro_scene":
                         if self.scene_fade >= 1.0:
                             self.state = "dialogue"
-                    elif self.dialogue.advance():
-                        self.state = "menu"
+                    else:
+                        self.advance_dialogue()
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     if self.state != "menu":
                         self.sfx.play("back")

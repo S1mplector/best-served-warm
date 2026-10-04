@@ -45,6 +45,7 @@ The root MIT license covers the project code. Asset rights are described above.
 # User-provided artwork
 
 - `assets/images/new_game_background.png`: `Bakery_PixelArt_MASTER_320x180.png`, supplied by the user on 2026-10-04 for the New Game scene background. No external license or attribution requirement was provided.
+- `assets/images/coffee_cup_station.png`: `Cozy Pixel Café Cup Station.png`, supplied by the user on 2026-10-04 for the coffee-making scene. Original 1672x940 image preserved; no external license or attribution requirement was provided.
 
 ## Shared itch.io research packs
 
