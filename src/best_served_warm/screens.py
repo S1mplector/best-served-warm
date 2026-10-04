@@ -12,6 +12,39 @@ PAPER = (255, 250, 242)
 HOVER = (255, 244, 213)
 ACCENT = (222, 97, 24)
 SHADOW = (153, 124, 113)
+DIALOGUE_OUTLINE = (91, 57, 43)
+DIALOGUE_RIM = (165, 108, 73)
+DIALOGUE_FACE = (234, 214, 180)
+DIALOGUE_LABEL = (214, 181, 137)
+DIALOGUE_INK = (76, 47, 38)
+
+
+def _stepped_rect(rect: pygame.Rect, cut: int = 3) -> list[tuple[int, int]]:
+    """Pixel-cut corners for a small hand-built panel silhouette."""
+    left, top, right, bottom = rect.left, rect.top, rect.right - 1, rect.bottom - 1
+    return [
+        (left + cut, top), (right - cut, top),
+        (right - cut, top + 1), (right, top + 1),
+        (right, bottom - 1), (right - cut, bottom - 1),
+        (right - cut, bottom), (left + cut, bottom),
+        (left + cut, bottom - 1), (left, bottom - 1),
+        (left, top + 1), (left + cut, top + 1),
+    ]
+
+
+def _pixel_panel(surface: pygame.Surface, rect: pygame.Rect,
+                 face: tuple[int, int, int]) -> None:
+    """Layer a warm stepped frame, thin caramel rim, and soft offset shadow."""
+    shadow = tuple(rect.move(2, 2))
+    pygame.draw.polygon(surface, (73, 47, 38, 150), _stepped_rect(pygame.Rect(shadow)))
+    pygame.draw.polygon(surface, DIALOGUE_OUTLINE, _stepped_rect(rect))
+    inset = rect.inflate(-2, -2)
+    pygame.draw.polygon(surface, DIALOGUE_RIM, _stepped_rect(inset, 1))
+    inner = rect.inflate(-3, -3)
+    pygame.draw.polygon(surface, face, _stepped_rect(inner, 1))
+    # Broken highlight marks keep the rim crisp without a smooth, continuous edge.
+    pygame.draw.rect(surface, (247, 226, 188), (rect.left + 5, rect.top + 2, 18, 1))
+    pygame.draw.rect(surface, (247, 226, 188), (rect.right - 12, rect.top + 2, 5, 1))
 
 
 def draw_options(app, pointer: tuple[float, float]) -> None:
@@ -39,16 +72,12 @@ def draw_dialogue(app, pointer: tuple[float, float]) -> None:
     title = app.dialogue.current[0]
     lines = app.dialogue.visible_lines
     box = pygame.Rect(18, 78, 156, 27)
-    pygame.draw.rect(app.canvas, SHADOW, box.move(1, 1))
-    pygame.draw.rect(app.canvas, DARK, box)
-    pygame.draw.rect(app.canvas, PAPER, box.inflate(-2, -2))
-    pygame.draw.line(app.canvas, (255, 255, 255), (20, 80), (171, 80))
+    _pixel_panel(app.canvas, box, DIALOGUE_FACE)
     nameplate = pygame.Rect(22, 69, 72, 10)
-    pygame.draw.rect(app.canvas, DARK, nameplate)
-    pygame.draw.rect(app.canvas, HOVER, nameplate.inflate(-2, -2))
-    app.text(title, (26, 74), anchor="midleft", small=True, larger=True)
+    _pixel_panel(app.canvas, nameplate, DIALOGUE_LABEL)
+    app.text(title, (26, 74), anchor="midleft", small=True, larger=True, color=DIALOGUE_INK)
     for y, line in zip((84, 92, 100), lines):
-        app.text(line, (23, y), anchor="midleft", small=True, larger=True)
+        app.text(line, (23, y), anchor="midleft", small=True, larger=True, color=DIALOGUE_INK)
     # A small breathing advance marker replaces the modal's separate button.
     offset = int(app.elapsed * 2) % 2
     pygame.draw.polygon(app.canvas, ACCENT,
