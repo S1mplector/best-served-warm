@@ -7,8 +7,13 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('source', type=Path)
 parser.add_argument('output', type=Path)
 parser.add_argument('--preview', type=Path)
+parser.add_argument('--crop-bottom', type=int, help='Crop source at this waist-line pixel before resizing')
 args = parser.parse_args()
 source = Image.open(args.source).convert('RGBA')
+if args.crop_bottom is not None:
+    if not 0 < args.crop_bottom <= source.height:
+        raise ValueError('Crop bottom must fall inside source image')
+    source = source.crop((0, 0, source.width, args.crop_bottom))
 # Ignore faint edge pixels when finding the subject. Keep a hard alpha mask.
 alpha = source.getchannel('A').point(lambda a: 255 if a >= 128 else 0)
 source.putalpha(alpha)
