@@ -1,0 +1,195 @@
+{
+  "size": [
+    32,
+    32
+  ],
+  "palette": {
+    "ink": "#583d35",
+    "shadow": "#a98069",
+    "cream": "#fff4d8",
+    "white": "#fffdf2",
+    "sage": "#8fa68b",
+    "sage_dark": "#5d7869",
+    "blue": "#b6d5d6",
+    "blue_dark": "#72979f",
+    "caramel": "#c38b4d",
+    "coffee": "#704832",
+    "steel": "#adb9af",
+    "pink": "#d38677"
+  },
+  "layers": [
+    {
+      "name": "ice",
+      "draw": [
+        {
+          "type": "polygon",
+          "points": [
+            [
+              5,
+              8
+            ],
+            [
+              13,
+              5
+            ],
+            [
+              19,
+              9
+            ],
+            [
+              19,
+              20
+            ],
+            [
+              11,
+              24
+            ],
+            [
+              5,
+              19
+            ]
+          ],
+          "color": "blue_dark"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              6,
+              9
+            ],
+            [
+              13,
+              7
+            ],
+            [
+              17,
+              10
+            ],
+            [
+              11,
+              12
+            ]
+          ],
+          "color": "white"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              6,
+              11
+            ],
+            [
+              11,
+              14
+            ],
+            [
+              11,
+              22
+            ],
+            [
+              6,
+              18
+            ]
+          ],
+          "color": "blue"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              13,
+              14
+            ],
+            [
+              18,
+              11
+            ],
+            [
+              18,
+              19
+            ],
+            [
+              13,
+              22
+            ]
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              18,
+              18
+            ],
+            [
+              25,
+              15
+            ],
+            [
+              30,
+              18
+            ],
+            [
+              30,
+              27
+            ],
+            [
+              23,
+              30
+            ],
+            [
+              18,
+              27
+            ]
+          ],
+          "color": "blue_dark"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              19,
+              19
+            ],
+            [
+              25,
+              17
+            ],
+            [
+              28,
+              19
+            ],
+            [
+              23,
+              21
+            ]
+          ],
+          "color": "white"
+        },
+        {
+          "type": "rect",
+          "box": [
+            20,
+            22,
+            3,
+            5
+          ],
+          "color": "blue"
+        },
+        {
+          "type": "rect",
+          "box": [
+            25,
+            22,
+            3,
+            5
+          ],
+          "color": "cream"
+        }
+      ]
+    }
+  ]
+}

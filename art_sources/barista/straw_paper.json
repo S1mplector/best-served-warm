@@ -1,0 +1,100 @@
+{
+  "size": [
+    32,
+    32
+  ],
+  "palette": {
+    "ink": "#583d35",
+    "shadow": "#a98069",
+    "cream": "#fff4d8",
+    "white": "#fffdf2",
+    "sage": "#8fa68b",
+    "sage_dark": "#5d7869",
+    "blue": "#b6d5d6",
+    "blue_dark": "#72979f",
+    "caramel": "#c38b4d",
+    "coffee": "#704832",
+    "steel": "#adb9af",
+    "pink": "#d38677"
+  },
+  "layers": [
+    {
+      "name": "straw_paper",
+      "draw": [
+        {
+          "type": "line",
+          "points": [
+            [
+              11,
+              29
+            ],
+            [
+              11,
+              9
+            ],
+            [
+              23,
+              2
+            ]
+          ],
+          "color": "ink",
+          "width": 4
+        },
+        {
+          "type": "line",
+          "points": [
+            [
+              11,
+              28
+            ],
+            [
+              11,
+              9
+            ],
+            [
+              23,
+              2
+            ]
+          ],
+          "color": "cream",
+          "width": 2
+        },
+        {
+          "type": "rect",
+          "box": [
+            10,
+            14,
+            3,
+            3
+          ],
+          "color": "pink"
+        },
+        {
+          "type": "rect",
+          "box": [
+            10,
+            23,
+            3,
+            3
+          ],
+          "color": "pink"
+        },
+        {
+          "type": "line",
+          "points": [
+            [
+              17,
+              5
+            ],
+            [
+              18,
+              7
+            ]
+          ],
+          "color": "pink",
+          "width": 2
+        }
+      ]
+    }
+  ]
+}

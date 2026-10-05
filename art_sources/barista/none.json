@@ -1,0 +1,62 @@
+{
+  "size": [
+    32,
+    32
+  ],
+  "palette": {
+    "ink": "#583d35",
+    "shadow": "#a98069",
+    "cream": "#fff4d8",
+    "white": "#fffdf2",
+    "sage": "#8fa68b",
+    "sage_dark": "#5d7869",
+    "blue": "#b6d5d6",
+    "blue_dark": "#72979f",
+    "caramel": "#c38b4d",
+    "coffee": "#704832",
+    "steel": "#adb9af",
+    "pink": "#d38677"
+  },
+  "layers": [
+    {
+      "name": "none",
+      "draw": [
+        {
+          "type": "ellipse",
+          "box": [
+            5,
+            5,
+            22,
+            22
+          ],
+          "color": "shadow"
+        },
+        {
+          "type": "ellipse",
+          "box": [
+            7,
+            7,
+            18,
+            18
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "line",
+          "points": [
+            [
+              9,
+              23
+            ],
+            [
+              23,
+              9
+            ]
+          ],
+          "color": "shadow",
+          "width": 2
+        }
+      ]
+    }
+  ]
+}

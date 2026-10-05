@@ -1,0 +1,14 @@
+# Barista and bakery asset research
+
+Downloaded on 2026-10-04. `../outputs/itch-free-assets/` is a local research folder beside this repository. These ZIPs are reference material; the raw files are not committed when the license forbids redistribution as an asset pack.
+
+| Pack | Local archive | Contents and size | Use terms | Integration |
+| --- | --- | --- | --- | --- |
+| [Karsiori Free Pixel Art Bar and Cafe Items](https://karsiori.itch.io/free-pixel-art-bar-and-cafe-items-pack) | `assets/hoarded/pixel-art-bar-and-cafe-cc0.zip` | 36 items; cups, four small glasses, blender, coffee pot, several espresso machines; sprites range from about 3x5 to 26x29 | CC0, commercial use allowed, credit optional | Espresso machine and coffee pot selected in `assets/barista/`; tiny cups/glasses are reference only because the game needs 32x32 everyday props. |
+| [Karsiori Free Pixel Art Food Pack](https://karsiori.itch.io/free-pixel-art-food-pack) | `assets/hoarded/karsiori-food-cc0.zip` | 24 foods plus four empty bowls/cups; croissants, doughnuts, cake, milk and cookies | CC0, commercial use allowed, credit appreciated | Croissant, chocolate doughnut, and strawberry cake selected in `assets/barista/`. |
+| [alexkovacsart 100 Free Pixel Art Foods](https://alexkovacsart.itch.io/free-pixel-art-foods) | `assets/hoarded/pixel-food-16x16-cc-by-4.0.zip` | 16x16 icons; light, medium, and dark roast beans, coffee drinks, milk jug, pastries | CC BY 4.0, credit creator and source | Three roast icons selected in `assets/barista/`. |
+| [JennPixel Free Cake Pack](https://jennpixel.itch.io/free-cake-pack-12-icons) | `../outputs/itch-free-assets/jennpixel-cakes.zip` | 12 cake varieties, with and without outlines, 32x32 | Commercial use allowed; credit requested if possible. Raw redistribution is not explicitly permitted. | Candidate bakery menu art. |
+| [aunzone Cozy Cafe Icons demo](https://aunzone.itch.io/cozy-cafe-icons-32x32) | `../outputs/itch-free-assets/aunzone-cozy-cafe-demo.zip` | 28 demo icons from a 170-icon pack; 32x32 source, hot/iced/to-go drinks, ingredients, gear, bakery | Commercial game use and edits allowed; credit appreciated; license in ZIP prohibits raw redistribution | Strong inventory and recipe candidate. The full pack is paid. |
+| [pixelbean Fantasy World Bakery demo](https://pixelbean.itch.io/fantasy-world-bakery-pixel-asset-pack) | `../outputs/itch-free-assets/pixelbean-bakery-demo.zip` | 16x16 based free subset of bakery props and tiles | Commercial game use and edits allowed; credit pixelbean; no asset-pack resale | Candidate environmental art. Full pack is paid. |
+
+Still missing cohesive 32x32 sprites for many glasses, ice, straws, portafilter, grinder, tamper, milk cartons, and syrup bottles. The current hand-authored pixel sprites in `art_sources/barista/` fill those slots so the mechanics can be built and tested without committing to a future pack. See `ASSET_LICENSES.md` for the shipped art credits.

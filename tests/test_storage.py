@@ -18,3 +18,13 @@ def test_option_bounds(tmp_path, monkeypatch):
     (tmp_path / "options.json").write_text(json.dumps({"volume": 3, "visualizer": False}))
     assert storage.load_options()["volume"] == 1
     assert storage.load_options()["visualizer"] is False
+
+
+def test_story_save_rejects_bad_position(tmp_path, monkeypatch):
+    monkeypatch.setattr(storage, "data_dir", lambda: tmp_path)
+    game = storage.DEFAULT_GAME | {"scene": "dialogue", "page": 2, "revealed": 14.0}
+    storage.save_game(game)
+    assert storage.load_game() == game
+    game["revealed"] = -1
+    storage.save_game(game)
+    assert storage.load_game() is None

@@ -1,0 +1,106 @@
+{
+  "size": [
+    32,
+    32
+  ],
+  "palette": {
+    "ink": "#583d35",
+    "shadow": "#a98069",
+    "cream": "#fff4d8",
+    "white": "#fffdf2",
+    "sage": "#8fa68b",
+    "sage_dark": "#5d7869",
+    "blue": "#b6d5d6",
+    "blue_dark": "#72979f",
+    "caramel": "#c38b4d",
+    "coffee": "#704832",
+    "steel": "#adb9af",
+    "pink": "#d38677"
+  },
+  "layers": [
+    {
+      "name": "rocks",
+      "draw": [
+        {
+          "type": "polygon",
+          "points": [
+            [
+              5,
+              13
+            ],
+            [
+              28,
+              13
+            ],
+            [
+              26,
+              29
+            ],
+            [
+              7,
+              29
+            ]
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              6,
+              14
+            ],
+            [
+              27,
+              14
+            ],
+            [
+              25,
+              28
+            ],
+            [
+              8,
+              28
+            ]
+          ],
+          "color": "blue"
+        },
+        {
+          "type": "line",
+          "points": [
+            [
+              8,
+              16
+            ],
+            [
+              9,
+              25
+            ]
+          ],
+          "color": "white",
+          "width": 1
+        },
+        {
+          "type": "rect",
+          "box": [
+            7,
+            14,
+            20,
+            1
+          ],
+          "color": "white"
+        },
+        {
+          "type": "rect",
+          "box": [
+            8,
+            27,
+            18,
+            1
+          ],
+          "color": "shadow"
+        }
+      ]
+    }
+  ]
+}

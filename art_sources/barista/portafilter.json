@@ -1,0 +1,87 @@
+{
+  "size": [
+    32,
+    32
+  ],
+  "palette": {
+    "ink": "#583d35",
+    "shadow": "#a98069",
+    "cream": "#fff4d8",
+    "white": "#fffdf2",
+    "sage": "#8fa68b",
+    "sage_dark": "#5d7869",
+    "blue": "#b6d5d6",
+    "blue_dark": "#72979f",
+    "caramel": "#c38b4d",
+    "coffee": "#704832",
+    "steel": "#adb9af",
+    "pink": "#d38677"
+  },
+  "layers": [
+    {
+      "name": "portafilter",
+      "draw": [
+        {
+          "type": "ellipse",
+          "box": [
+            3,
+            4,
+            20,
+            13
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "ellipse",
+          "box": [
+            4,
+            5,
+            18,
+            9
+          ],
+          "color": "steel"
+        },
+        {
+          "type": "ellipse",
+          "box": [
+            6,
+            6,
+            14,
+            6
+          ],
+          "color": "coffee"
+        },
+        {
+          "type": "line",
+          "points": [
+            [
+              16,
+              14
+            ],
+            [
+              28,
+              28
+            ]
+          ],
+          "color": "ink",
+          "width": 5
+        },
+        {
+          "type": "line",
+          "points": [
+            [
+              17,
+              16
+            ],
+            [
+              27,
+              27
+            ]
+          ],
+          "color": "shadow",
+          "width": 2
+        }
+      ]
+    }
+  ]
+}

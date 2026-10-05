@@ -1,0 +1,151 @@
+{
+  "size": [
+    32,
+    32
+  ],
+  "palette": {
+    "ink": "#583d35",
+    "shadow": "#a98069",
+    "cream": "#fff4d8",
+    "white": "#fffdf2",
+    "sage": "#8fa68b",
+    "sage_dark": "#5d7869",
+    "blue": "#b6d5d6",
+    "blue_dark": "#72979f",
+    "caramel": "#c38b4d",
+    "coffee": "#704832",
+    "steel": "#adb9af",
+    "pink": "#d38677"
+  },
+  "layers": [
+    {
+      "name": "grinder",
+      "draw": [
+        {
+          "type": "rect",
+          "box": [
+            7,
+            26,
+            21,
+            4
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "rect",
+          "box": [
+            10,
+            11,
+            15,
+            16
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "rect",
+          "box": [
+            11,
+            12,
+            13,
+            13
+          ],
+          "color": "sage_dark"
+        },
+        {
+          "type": "rect",
+          "box": [
+            14,
+            18,
+            9,
+            3
+          ],
+          "color": "steel"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              7,
+              3
+            ],
+            [
+              27,
+              3
+            ],
+            [
+              24,
+              12
+            ],
+            [
+              10,
+              12
+            ]
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              9,
+              4
+            ],
+            [
+              25,
+              4
+            ],
+            [
+              22,
+              10
+            ],
+            [
+              12,
+              10
+            ]
+          ],
+          "color": "caramel"
+        },
+        {
+          "type": "rect",
+          "box": [
+            10,
+            4,
+            15,
+            2
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "rect",
+          "box": [
+            14,
+            23,
+            7,
+            3
+          ],
+          "color": "coffee"
+        },
+        {
+          "type": "rect",
+          "box": [
+            11,
+            27,
+            13,
+            1
+          ],
+          "color": "steel"
+        },
+        {
+          "type": "rect",
+          "box": [
+            20,
+            14,
+            3,
+            3
+          ],
+          "color": "cream"
+        }
+      ]
+    }
+  ]
+}

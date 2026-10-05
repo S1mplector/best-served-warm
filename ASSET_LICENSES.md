@@ -46,6 +46,7 @@ The root MIT license covers the project code. Asset rights are described above.
 
 - `assets/images/new_game_background.png`: `Bakery_PixelArt_MASTER_320x180.png`, supplied by the user on 2026-10-04 for the New Game scene background. No external license or attribution requirement was provided.
 - `assets/images/coffee_cup_station.png`: `Cozy Pixel Café Cup Station.png`, supplied by the user on 2026-10-04 for the coffee-making scene. Original 1672x940 image preserved; no external license or attribution requirement was provided.
+- `assets/images/coffee_cup_station_master.png`: `Coffee_Cup_Station_FINAL_MASTER_320x180.png`, supplied by Yağmur Ali by email on 2026-10-04. The nine `assets/cups/*.png` sprites are lossless alpha crops of this sheet. No external license or attribution requirement was provided.
 
 ## Shared itch.io research packs
 
@@ -56,5 +57,11 @@ These source files are kept intact under `assets/hoarded/` for project reference
 - `assets/hoarded/pixel-art-bar-and-cafe-cc0.zip`: Karsiori Studio, [Free Pixel Art Bar and Cafe Items Pack](https://karsiori.itch.io/free-pixel-art-bar-and-cafe-items-pack), CC0. Credit is appreciated but not required.
 - `assets/hoarded/pixel-food-16x16-cc-by-4.0.zip`: alexkovacsart, [100 Free Pixel Art Foods](https://alexkovacsart.itch.io/free-pixel-art-foods), CC BY 4.0. Credit the creator and link to the pack.
 - `assets/hoarded/megabyte-mouse-cursors-cc0.zip`: Megabyte Games, [Mouse Cursor Pack](https://megabyte-games.itch.io/mouse-cursor-pack), CC0 1.0. Credit is optional.
+- `assets/hoarded/karsiori-food-cc0.zip` and selected `assets/barista/{croissant,doughnut,cake}.png`: Karsiori Studio, [FREE Pixel Art - Food Pack](https://karsiori.itch.io/free-pixel-art-food-pack), CC0 1.0. Credit is appreciated but optional. The source pack is retained intact; selected sprites keep their native dimensions.
+- `assets/barista/{espresso_machine,coffee_pot}.png` are unmodified sprites from the Karsiori Studio [Bar and Cafe Items Pack](https://karsiori.itch.io/free-pixel-art-bar-and-cafe-items-pack) above, CC0.
+- `assets/barista/beans_{light,medium,dark}.png` are native 16x16 icons from alexkovacsart's [100 Free Pixel Art Foods](https://alexkovacsart.itch.io/free-pixel-art-foods), CC BY 4.0. Credit alexkovacsart and link the pack when distributing the game.
+- The remaining `assets/barista/*.png` are original 32x32 pixel sprites authored for this project. Editable operation layers are in `art_sources/barista/*.json`; `tools/build_barista_art.py` regenerates them.
 
 Other downloaded candidates remain in the local research folder, not this repository: the Yanin coffee sample, Food & Ingredients, Ghostpixxells Pixel Food, Neko Cafe, Cozy Starter, and Tiny Cat packs. Their listings restrict redistribution of the raw files or leave the scope unclear. Existing selected game assets already imported under their project-use terms are documented above.
+
+New itch.io research downloads and terms are recorded in `docs/itch-assets.md`. Packs whose licenses prohibit raw-file redistribution stay outside this repository.

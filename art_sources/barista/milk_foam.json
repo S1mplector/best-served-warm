@@ -1,0 +1,109 @@
+{
+  "size": [
+    32,
+    32
+  ],
+  "palette": {
+    "ink": "#583d35",
+    "shadow": "#a98069",
+    "cream": "#fff4d8",
+    "white": "#fffdf2",
+    "sage": "#8fa68b",
+    "sage_dark": "#5d7869",
+    "blue": "#b6d5d6",
+    "blue_dark": "#72979f",
+    "caramel": "#c38b4d",
+    "coffee": "#704832",
+    "steel": "#adb9af",
+    "pink": "#d38677"
+  },
+  "layers": [
+    {
+      "name": "milk_foam",
+      "draw": [
+        {
+          "type": "polygon",
+          "points": [
+            [
+              7,
+              10
+            ],
+            [
+              21,
+              10
+            ],
+            [
+              26,
+              7
+            ],
+            [
+              24,
+              24
+            ],
+            [
+              10,
+              27
+            ]
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              9,
+              11
+            ],
+            [
+              21,
+              11
+            ],
+            [
+              24,
+              9
+            ],
+            [
+              22,
+              23
+            ],
+            [
+              11,
+              25
+            ]
+          ],
+          "color": "steel"
+        },
+        {
+          "type": "ellipse",
+          "box": [
+            9,
+            9,
+            14,
+            5
+          ],
+          "color": "white"
+        },
+        {
+          "type": "rect",
+          "box": [
+            24,
+            13,
+            4,
+            9
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "rect",
+          "box": [
+            25,
+            15,
+            2,
+            5
+          ],
+          "color": "cream"
+        }
+      ]
+    }
+  ]
+}

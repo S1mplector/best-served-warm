@@ -1,6 +1,6 @@
 # Best Served Warm
 
-A cozy cafe game prototype in Python. The menu uses the supplied ChatGPT artwork, animated buttons, and a custom animated cursor. Buttons have clear hover and click states. The music and menu fade in together. New Game starts a small drink-serving loop; Load Game restores it; Options controls music and fullscreen. The bar visualizer is saved in the codebase for later, but is currently hidden.
+A cozy cafe game prototype in Python. New Game opens a minimal cat loading scene, then a customer enters the bakery and orders a mug latte with a croissant. Reply to the customer to take the order, choose one of nine cups at the cup station, and place it on the counter to continue to the working barista stations. The later station layout is a temporary visual prototype; its cup and tool mechanics can move into future cafe scenes. Load Game restores the conversation, cup selection, or drink mid-preparation.
 
 ## Run
 
@@ -19,7 +19,9 @@ The `best-served-warm-render-gif` command creates gentle line-boil GIFs with Pil
 best-served-warm-render-gif assets/buttons/new-game.png /tmp/new-game.gif --width 700 --strength 0.45 --amplitude 0.55 --frames 3 --fps 5 --pingpong
 ```
 
-On Windows activate with `.venv\Scripts\activate` and use `python` as usual. Click the buttons. Escape saves and returns to the menu; Escape from the menu exits. Save files live under the platform's user application data directory.
+On Windows activate with `.venv\Scripts\activate` and use `python` as usual. At the cup station, click a cup on the rack, click the counter to place it, then choose Next Station. At the temporary barista stations, click a tool to pick it up and click a station to place it. Hold the controls to grind, tamp, brew, and steam milk; release to stop. Move the cup to the milk and finishing stations to add ingredients, then to Serve. Bring used tools to the sink to rinse them. Press Escape to pause and save at any point. Save files live under the platform's user application data directory.
+
+The preparation rules are in `src/best_served_warm/stations.py`: each cup and tool has its own location and contents, allowing more than one drink in progress and preparation in different orders. Dose, tamp pressure, shot yield, and milk temperature affect the result. `station_view.py` is only the current clickable stand-in for future station art.
 
 ## Build
 
@@ -37,6 +39,9 @@ PyInstaller must run **on each target OS**. The GitHub Actions workflow runs hea
 - `art.py`: still images, pikupiku button GIFs, and cursor GIF frames
 - `music.py`: music playback, with optional spectrum analysis for future visuals
 - `visualizer.py`: dormant bar renderer retained for later
+- `stations.py`: station, item, preparation, cleaning, and order rules
+- `station_view.py`: temporary station scene and input
+- `loading_cats.py`: animated cats and spinner
 - `storage.py`: save and options data
 - `assets/`: original menu art, animated buttons, one bar sprite, music
 
@@ -53,4 +58,4 @@ Edit a palette and integer-pixel drawing operations in `art_sources/coffee_cup.j
 python -m best_served_warm.pixel_art art_sources/coffee_cup.json assets/pixel/coffee_cup.png --preview ../outputs/coffee_cup_preview.png --scale 8
 ```
 
-All screens now draw at the supplied main menu's native 192x108 resolution, enlarged with nearest-neighbor scaling to fill the window. Its four built-in buttons receive a slight warm fill on hover without replacing their lettering or shadows. Options, load feedback, and play controls appear as simple pixel-art popups over the artwork; the custom cursor appears throughout. The free [GegX Cozy Starter](https://gegx.itch.io/cozy-starter) pack and other cafe/food research downloads are cataloged in `../outputs/itch-free-assets/MANIFEST.md` on this machine. The art direction and native sprite sizes are in `AGENTS.md`.
+The supplied main menu and the cat loading screen draw at 192x108 native resolution; the temporary station scene draws at 640x360. Both scale with nearest-neighbor filtering. The menu's four built-in buttons receive a slight warm fill on hover without replacing their lettering or shadows. Options and load feedback use pixel-art popups. Asset research is recorded in `docs/itch-assets.md`, with licensing in `ASSET_LICENSES.md`.

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import math
-
 import pygame
 
 INK = (137, 87, 67)
@@ -85,23 +83,33 @@ def draw_dialogue(app, pointer: tuple[float, float]) -> None:
 
 
 def draw_loading(app) -> None:
-    """Minimal black loading screen with the sleeping cat and pixel spinner."""
-    app.canvas.fill((0, 0, 0))
-    cat_width = 32
-    cat_height = max(1, round(app.loading_cat.get_height() * cat_width / app.loading_cat.get_width()))
-    cat = pygame.transform.scale(app.loading_cat, (cat_width, cat_height))
-    app.canvas.blit(cat, cat.get_rect(center=(96, 44)))
+    """Several cats chase, play with yarn, nap, and wake independently."""
+    app.loading_cats.draw(app.canvas)
 
-    center = (96, 73)
-    radius = 8
-    active = round(app.loading_elapsed * 9) % 8
-    for index in range(8):
-        angle = index * 3.14159265 / 4
-        x = round(center[0] + radius * math.cos(angle))
-        y = round(center[1] + radius * math.sin(angle))
-        distance = (index - active) % 8
-        brightness = max(72, 240 - distance * 24)
-        pygame.draw.rect(app.canvas, (brightness, brightness, brightness), (x, y, 2, 2))
+
+CUSTOMER_REPLY = pygame.Rect(119, 86, 48, 13)
+
+
+def draw_customer(app, pointer: tuple[float, float]) -> None:
+    """First order exchange, staged over the bakery with no customer sprite."""
+    box = pygame.Rect(15, 63, 162, 42)
+    _pixel_panel(app.canvas, box, DIALOGUE_FACE)
+    nameplate = pygame.Rect(19, 56, 60, 9)
+    _pixel_panel(app.canvas, nameplate, DIALOGUE_LABEL)
+    app.text('MILA', (24, 60), anchor='midleft', small=True, larger=True,
+             color=DIALOGUE_INK)
+    if app.customer_step == 0:
+        app.text('Hello! Is the cafe open?', (22, 73), anchor='midleft', small=True,
+                 larger=True, color=DIALOGUE_INK)
+        app.text('I could use something warm.', (22, 81), anchor='midleft', small=True,
+                 larger=True, color=DIALOGUE_INK)
+        app.button(CUSTOMER_REPLY, 'WELCOME IN', pointer)
+    else:
+        app.text('A house latte in a ceramic mug,', (22, 73), anchor='midleft',
+                 small=True, larger=True, color=DIALOGUE_INK)
+        app.text('and a croissant, please.', (22, 81), anchor='midleft',
+                 small=True, larger=True, color=DIALOGUE_INK)
+        app.button(CUSTOMER_REPLY, 'TAKE ORDER', pointer)
 
 
 def draw_no_save(app, pointer: tuple[float, float]) -> None:
@@ -110,3 +118,21 @@ def draw_no_save(app, pointer: tuple[float, float]) -> None:
     app.text("START A NEW GAME?", (96, 55))
     app.button(pygame.Rect(46, 63, 45, 12), "NEW", pointer)
     app.button(pygame.Rect(101, 63, 45, 12), "BACK", pointer)
+
+
+PAUSE_BUTTONS = {
+    "resume": pygame.Rect(62, 45, 68, 12),
+    "save": pygame.Rect(62, 61, 68, 12),
+    "menu": pygame.Rect(62, 77, 68, 12),
+}
+
+
+def draw_pause(app, pointer: tuple[float, float]) -> None:
+    app.popup(pygame.Rect(47, 19, 98, 78))
+    app.text("PAUSED", (96, 31), title=True)
+    pygame.draw.line(app.canvas, INK, (57, 38), (135, 38))
+    app.button(PAUSE_BUTTONS["resume"], "RESUME", pointer)
+    app.button(PAUSE_BUTTONS["save"], "SAVE GAME", pointer)
+    app.button(PAUSE_BUTTONS["menu"], "MAIN MENU", pointer)
+    if app.message and app.elapsed < app.message_until:
+        app.text(app.message, (96, 94), small=True, color=ACCENT)

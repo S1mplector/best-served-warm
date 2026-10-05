@@ -1,12 +1,15 @@
 """Tiny branching point for the placeholder cafe story loop."""
 
 DIALOGUE = (
-    ("A RAINY MORNING", "Lorem ipsum dolor sit amet, consectetur",
-     "adipiscing elit. A bell rings above the door.",
+    ("A RAINY MORNING", "The bell rings softly above the door.",
+     "The beans are fresh. The counter is ready.",
      "Someone is waiting for a warm cup."),
-    ("A LITTLE WELCOME", "Lorem ipsum dolor sit amet, consectetur",
-     "adipiscing elit. The kettle begins to sing.",
-     "Outside, the rain turns soft and silver."),
+    ("A LITTLE WELCOME", "Choose a cup and a roast, then grind.",
+     "Tamp gently. Watch the coffee flow.",
+     "A little patience makes a lovely cup."),
+    ("YOUR FIRST ORDER", "Mila would love a latte and a croissant.",
+     "Her order is waiting beside the machine.",
+     "Let's make something warm."),
 )
 
 

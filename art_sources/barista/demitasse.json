@@ -1,0 +1,126 @@
+{
+  "size": [
+    32,
+    32
+  ],
+  "palette": {
+    "ink": "#583d35",
+    "shadow": "#a98069",
+    "cream": "#fff4d8",
+    "white": "#fffdf2",
+    "sage": "#8fa68b",
+    "sage_dark": "#5d7869",
+    "blue": "#b6d5d6",
+    "blue_dark": "#72979f",
+    "caramel": "#c38b4d",
+    "coffee": "#704832",
+    "steel": "#adb9af",
+    "pink": "#d38677"
+  },
+  "layers": [
+    {
+      "name": "demitasse",
+      "draw": [
+        {
+          "type": "ellipse",
+          "box": [
+            22,
+            15,
+            8,
+            10
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "ellipse",
+          "box": [
+            24,
+            17,
+            4,
+            6
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              6,
+              13
+            ],
+            [
+              23,
+              13
+            ],
+            [
+              21,
+              25
+            ],
+            [
+              8,
+              25
+            ]
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              7,
+              14
+            ],
+            [
+              22,
+              14
+            ],
+            [
+              20,
+              24
+            ],
+            [
+              9,
+              24
+            ]
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "line",
+          "points": [
+            [
+              9,
+              16
+            ],
+            [
+              10,
+              21
+            ]
+          ],
+          "color": "white",
+          "width": 1
+        },
+        {
+          "type": "rect",
+          "box": [
+            8,
+            14,
+            14,
+            1
+          ],
+          "color": "white"
+        },
+        {
+          "type": "rect",
+          "box": [
+            9,
+            23,
+            12,
+            1
+          ],
+          "color": "shadow"
+        }
+      ]
+    }
+  ]
+}

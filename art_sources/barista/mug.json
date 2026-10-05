@@ -1,0 +1,151 @@
+{
+  "size": [
+    32,
+    32
+  ],
+  "palette": {
+    "ink": "#583d35",
+    "shadow": "#a98069",
+    "cream": "#fff4d8",
+    "white": "#fffdf2",
+    "sage": "#8fa68b",
+    "sage_dark": "#5d7869",
+    "blue": "#b6d5d6",
+    "blue_dark": "#72979f",
+    "caramel": "#c38b4d",
+    "coffee": "#704832",
+    "steel": "#adb9af",
+    "pink": "#d38677"
+  },
+  "layers": [
+    {
+      "name": "mug",
+      "draw": [
+        {
+          "type": "ellipse",
+          "box": [
+            23,
+            10,
+            8,
+            10
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "ellipse",
+          "box": [
+            25,
+            12,
+            4,
+            6
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              5,
+              8
+            ],
+            [
+              24,
+              8
+            ],
+            [
+              22,
+              27
+            ],
+            [
+              7,
+              27
+            ]
+          ],
+          "color": "ink"
+        },
+        {
+          "type": "polygon",
+          "points": [
+            [
+              6,
+              9
+            ],
+            [
+              23,
+              9
+            ],
+            [
+              21,
+              26
+            ],
+            [
+              8,
+              26
+            ]
+          ],
+          "color": "cream"
+        },
+        {
+          "type": "line",
+          "points": [
+            [
+              8,
+              11
+            ],
+            [
+              9,
+              23
+            ]
+          ],
+          "color": "white",
+          "width": 1
+        },
+        {
+          "type": "rect",
+          "box": [
+            7,
+            9,
+            16,
+            1
+          ],
+          "color": "white"
+        },
+        {
+          "type": "rect",
+          "box": [
+            8,
+            25,
+            14,
+            1
+          ],
+          "color": "shadow"
+        },
+        {
+          "type": "ellipse",
+          "box": [
+            11,
+            16,
+            7,
+            5
+          ],
+          "color": "sage_dark"
+        },
+        {
+          "type": "line",
+          "points": [
+            [
+              14,
+              16
+            ],
+            [
+              13,
+              20
+            ]
+          ],
+          "color": "cream",
+          "width": 1
+        }
+      ]
+    }
+  ]
+}

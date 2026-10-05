@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import pygame
+from .paths import asset_path
 
 
 STATION_SIZE = (1672, 940)
@@ -38,6 +39,29 @@ class CoffeeStation:
         self.placed: list[dict] = []
         self.held: dict | None = None
         self.pointer = (0.0, 0.0)
+        self.sprites = {(style, size): pygame.image.load(str(asset_path('cups', f'{style}_{size.lower()}.png'))).convert_alpha()
+                        for style, size, *_ in CHOICES}
+
+    def to_dict(self) -> dict:
+        return {'held': self.held, 'placed': self.placed}
+
+    def restore(self, raw: dict) -> None:
+        if not isinstance(raw, dict) or not isinstance(raw.get('placed'), list) or len(raw['placed']) > 3:
+            raise ValueError('invalid cup station')
+        valid = {(style, size): dimensions for style, size, _, dimensions in CHOICES}
+        def item(data, placed):
+            if not isinstance(data, dict) or (data.get('style'), data.get('size')) not in valid:
+                raise ValueError('invalid cup')
+            style, size = data['style'], data['size']
+            result = {'style': style, 'size': size, 'dimensions': valid[(style, size)]}
+            if placed:
+                x, bottom = data.get('x'), data.get('bottom')
+                if type(x) not in (int, float) or type(bottom) not in (int, float) or not COUNTER.collidepoint(x, bottom):
+                    raise ValueError('invalid cup placement')
+                result.update(x=x, bottom=bottom)
+            return result
+        self.placed = [item(value, True) for value in raw['placed']]
+        self.held = item(raw['held'], False) if raw.get('held') is not None else None
 
     def move_pointer(self, point: tuple[float, float]) -> None:
         self.pointer = point
@@ -93,12 +117,8 @@ class CoffeeStation:
         width, height = item["dimensions"]
         left = round(center_x - width / 2)
         top = round(bottom - height)
-        if item["style"] == "takeaway":
-            self._draw_takeaway(surface, left, top, width, height)
-        elif item["style"] == "cold":
-            self._draw_cold(surface, left, top, width, height)
-        else:
-            self._draw_mug(surface, left, top, width, height)
+        sprite = self.sprites[(item['style'], item['size'])]
+        surface.blit(pygame.transform.scale(sprite, (width, height)), (left, top))
 
     @staticmethod
     def _draw_takeaway(surface: pygame.Surface, x: int, y: int, w: int, h: int) -> None:

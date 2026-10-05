@@ -1,6 +1,7 @@
 """Quiet UI feedback, with entry-only hover sounds and bounded playback."""
 import pygame
 from .menu import BUTTON_RECTS
+from .screens import PAUSE_BUTTONS
 from .paths import asset_path
 
 
@@ -12,6 +13,7 @@ def target_at(state, point):
                     'back': pygame.Rect(68, 79, 56, 13)},
         'no_save': {'new': pygame.Rect(46, 63, 45, 12),
                     'back': pygame.Rect(101, 63, 45, 12)},
+        'pause': PAUSE_BUTTONS,
     }
     if state == 'dialogue':
         return 'advance'
