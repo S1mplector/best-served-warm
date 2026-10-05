@@ -44,6 +44,8 @@ The root MIT license covers the project code. Asset rights are described above.
 - Current font: `assets/fonts/m5x7.ttf`, m5x7 by Daniel Linssen, downloaded from https://managore.itch.io/m5x7 . Listing declares CC0; attribution appreciated. Use only the creator’s specified sizes 16, 32, 48, etc. Runtime uses 16 for dialogue and 32 for menu text, followed only by integer scaling.
 # User-provided artwork
 
+- `assets/characters/redhead_woman_retro.png`: revised layered retro design of the female character, generated with built-in imagegen on 2026-10-05 and converted with the existing 160×160 Python pipeline. Source, prompt and preview are in `art_sources/characters/redhead_woman_retro*` and its `previews/` directory.
+
 - `assets/characters/redhead_woman_neutral.png`: original female character generated with built-in imagegen on 2026-10-05, using the existing standing character as the style reference. Converted through the same 160×160 nearest-neighbor pipeline. Original, exact prompt, and preview are in `art_sources/characters/`, documented in `redhead_woman.md`.
 
 - `assets/characters/spiky_guy_{neutral,talking,confused,happy,surprised,concerned}.png`: facial-expression edits of the generated standing character, made with built-in imagegen on 2026-10-05 and converted with the same Python nearest-neighbor workflow. Full sources, exact prompts, and previews are retained in `art_sources/characters/`.
