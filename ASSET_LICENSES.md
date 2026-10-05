@@ -44,6 +44,8 @@ The root MIT license covers the project code. Asset rights are described above.
 - Current font: `assets/fonts/m5x7.ttf`, m5x7 by Daniel Linssen, downloaded from https://managore.itch.io/m5x7 . Listing declares CC0; attribution appreciated. Use only the creator’s specified sizes 16, 32, 48, etc. Runtime uses 16 for dialogue and 32 for menu text, followed only by integer scaling.
 # User-provided artwork
 
+- `assets/characters/spiky_guy.png` and `spiky_guy_idle.png`: original greeting character and standing closed-mouth smile variant generated for this project with the built-in imagegen tool on 2026-10-05, then reduced to 160×160 in Python with nearest-neighbor filtering at the user's request. Both full-resolution sources, prompts, and enlarged previews are preserved in `art_sources/characters/`.
+
 - `assets/images/new_game_background.png`: `Bakery_PixelArt_MASTER_320x180.png`, supplied by the user on 2026-10-04 for the New Game scene background. No external license or attribution requirement was provided.
 - `assets/images/coffee_cup_station.png`: `Cozy Pixel Café Cup Station.png`, supplied by the user on 2026-10-04 for the coffee-making scene. Original 1672x940 image preserved; no external license or attribution requirement was provided.
 - `assets/images/coffee_cup_station_master.png`: `Coffee_Cup_Station_FINAL_MASTER_320x180.png`, supplied by Yağmur Ali by email on 2026-10-04. The nine `assets/cups/*.png` sprites are lossless alpha crops of this sheet. No external license or attribution requirement was provided.

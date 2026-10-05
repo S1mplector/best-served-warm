@@ -12,7 +12,7 @@
 - Use **16x16 px tiles** for room floors, walls, counters, and modular background construction.
 - Use **32x32 px native sprites** for everyday cafe props and food: coffee cups, mugs, beans, espresso tools, plates, croissants, pastries, cakes, and small countertop objects. Multi-tile furniture may be assembled from 16x16 tiles or drawn as clean multiples of the grid.
 - Use **16x16 px sprites** only for tiny objects, garnish, icons, and inventory markers where readability permits. Do not shrink 32x32 food sprites into blurry miniatures.
-- Use **64x64 px character frames** for the barista and customer portraits/standing sprites. Animation frames must share a consistent canvas and pivot.
+- Use **160x160 px waist-up character frames** for all characters for now. Keep complete silhouettes inside a 150x150 area, centered horizontally, with the waist baseline at y=155 and shared bottom-center anchor (80, 155). Follow `art_sources/characters/README.md`. The user requested generated art reduced with Python nearest-neighbor for this character workflow; use `tools/build_character.py` and preserve sources. Animation and expression frames must share this canvas and pivot. Never reduce characters below 160x160; regenerate from the original source.
 - Keep pixel edges hard: use nearest-neighbor scaling at every asset resize and final screen upscale. Avoid bilinear/bicubic filtering, soft blur, anti-aliased vector edges, and texture overlays that obscure pixel clusters.
 - Author future gameplay backgrounds on the same 16 px tile grid; a full-screen 640x360 background is 40x22.5 tiles, so compose from tiles or use a designed 640x360 scene with edges aligned to the grid.
 
