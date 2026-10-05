@@ -2,7 +2,7 @@
 
 Current requested design: pale skin, slightly larger hazel eyes, subtly tired neutral expression, longer and less voluminous dark-red hair, fuller build. Cream collared blouse, striped sweater, and open olive vest create a layered retro outfit. Previous neutral design is retained separately for reference.
 
-Created with built-in imagegen on 2026-10-05, editing the preceding character illustration. Uses the unchanged `tools/build_character.py` pipeline: 160×160 transparent sprite, nearest-neighbor resampling, 32 colors, anchor (80, 155).
+Created with built-in imagegen on 2026-10-05, editing the preceding character illustration. Uses the `tools/build_character.py --pixel-clusters` pipeline: 160×160 transparent sprite, nearest-neighbor resampling, 16 flat colors with source texture cleanup, anchor (80, 155).
 
 - Original: `redhead_woman_retro_source.png`
 - Sprite: `../../assets/characters/redhead_woman_retro.png`
@@ -11,7 +11,7 @@ Created with built-in imagegen on 2026-10-05, editing the preceding character il
 The runtime sprite is cropped at source y=1080 (waist line), removing the lower torso/trousers before nearest-neighbor reduction. Regenerate:
 
 ```sh
-.venv/bin/python tools/build_character.py art_sources/characters/redhead_woman_retro_source.png assets/characters/redhead_woman_retro.png --crop-bottom 1080 --preview art_sources/characters/previews/redhead_woman_retro.png
+.venv/bin/python tools/build_character.py art_sources/characters/redhead_woman_retro_source.png assets/characters/redhead_woman_retro.png --crop-bottom 1080 --pixel-clusters --preview art_sources/characters/previews/redhead_woman_retro.png
 ```
 
 ## Prompt
