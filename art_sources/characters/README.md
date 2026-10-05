@@ -12,6 +12,12 @@ Regenerate from the repository root:
 
 ## Saved poses
 
+### Visual novel expressions
+
+Six variants forked directly from the standing source with the built-in imagegen tool: `neutral`, `talking`, `confused`, `happy`, `surprised`, and `concerned`. Each preserves the standing pose and clothing, varying the facial expression. Exact prompts are in `expression_prompts.json`.
+
+For each expression, the original is `spiky_guy_<expression>_source.png`, the transparent 160×160 game sprite is `../../assets/characters/spiky_guy_<expression>.png`, and the 640×640 reference is `previews/spiky_guy_<expression>.png`. The labeled overview is `previews/spiky_guy_expressions.png`. Regenerate with the same `tools/build_character.py` command as the idle pose, substituting the expression name. These are individual still expressions, not a lip-sync animation.
+
 - Greeting: `spiky_guy_source.png`, runtime `../../assets/characters/spiky_guy.png`, enlarged reference `previews/spiky_guy_greeting.png`.
 - Relaxed standing, closed-mouth smile: `spiky_guy_idle_source.png`, runtime `../../assets/characters/spiky_guy_idle.png`, enlarged reference `previews/spiky_guy_idle.png`.
 - Both runtime sprites are 160×160; previews are 640×640 nearest-neighbor enlargements. Sources and previews are retained in Git for future edits.

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "neutral",
+    "prompt": "Use case: identity-preserve. Edit the supplied standing character to create a visual-novel expression variant. Neutral listening face: calm relaxed eyebrows, attentive open eyes, relaxed closed mouth without a smile. Change only eyes, eyebrows and mouth within the face. Preserve exact character identity, chestnut spiky hair, head angle and size, body pose, arms lowered, mustard overshirt, cream shirt, outlines, warm palette, lighting, framing and waist crop. Same hybrid anime/stylized game art. Keep the original square canvas and genuinely transparent background. Single waist-up character, no labels, no symbols or props. Maintain original positions so expression changes can be swapped without body movement."
+  },
+  {
+    "name": "talking",
+    "prompt": "Use case: identity-preserve. Edit the supplied standing character to create a visual-novel expression variant. Friendly talking face: eyes attentive, slightly raised eyebrows, mouth moderately open mid-sentence, clearly speaking rather than laughing. Change only eyes, eyebrows and mouth within the face. Preserve exact character identity, chestnut spiky hair, head angle and size, body pose, arms lowered, mustard overshirt, cream shirt, outlines, warm palette, lighting, framing and waist crop. Same hybrid anime/stylized game art. Keep the original square canvas and genuinely transparent background. Single waist-up character, no labels, no symbols or props. Maintain original positions so expression changes can be swapped without body movement."
+  },
+  {
+    "name": "confused",
+    "prompt": "Use case: identity-preserve. Edit the supplied standing character to create a visual-novel expression variant. Confused puzzled face: one eyebrow raised and the other gently furrowed, eyes questioning, small uneven closed mouth. No symbols. Change only eyes, eyebrows and mouth within the face. Preserve exact character identity, chestnut spiky hair, head angle and size, body pose, arms lowered, mustard overshirt, cream shirt, outlines, warm palette, lighting, framing and waist crop. Same hybrid anime/stylized game art. Keep the original square canvas and genuinely transparent background. Single waist-up character, no labels, no symbols or props. Maintain original positions so expression changes can be swapped without body movement."
+  },
+  {
+    "name": "happy",
+    "prompt": "Use case: identity-preserve. Edit the supplied standing character to create a visual-novel expression variant. Happy delighted face: eyes cheerfully narrowed, eyebrows relaxed, broad open smile with upper teeth visible. Change only eyes, eyebrows and mouth within the face. Preserve exact character identity, chestnut spiky hair, head angle and size, body pose, arms lowered, mustard overshirt, cream shirt, outlines, warm palette, lighting, framing and waist crop. Same hybrid anime/stylized game art. Keep the original square canvas and genuinely transparent background. Single waist-up character, no labels, no symbols or props. Maintain original positions so expression changes can be swapped without body movement."
+  },
+  {
+    "name": "surprised",
+    "prompt": "Use case: identity-preserve. Edit the supplied standing character to create a visual-novel expression variant. Surprised face: both eyebrows raised, eyes wide, small round open mouth. Change only eyes, eyebrows and mouth within the face. Preserve exact character identity, chestnut spiky hair, head angle and size, body pose, arms lowered, mustard overshirt, cream shirt, outlines, warm palette, lighting, framing and waist crop. Same hybrid anime/stylized game art. Keep the original square canvas and genuinely transparent background. Single waist-up character, no labels, no symbols or props. Maintain original positions so expression changes can be swapped without body movement."
+  },
+  {
+    "name": "concerned",
+    "prompt": "Use case: identity-preserve. Edit the supplied standing character to create a visual-novel expression variant. Concerned sympathetic face: inner eyebrows raised and gently drawn together, soft worried eyes, small closed mouth turned slightly down. Change only eyes, eyebrows and mouth within the face. Preserve exact character identity, chestnut spiky hair, head angle and size, body pose, arms lowered, mustard overshirt, cream shirt, outlines, warm palette, lighting, framing and waist crop. Same hybrid anime/stylized game art. Keep the original square canvas and genuinely transparent background. Single waist-up character, no labels, no symbols or props. Maintain original positions so expression changes can be swapped without body movement."
+  }
+]
