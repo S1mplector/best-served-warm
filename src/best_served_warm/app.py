@@ -124,10 +124,11 @@ class App:
         self.coffee_station = CoffeeStation()
         self.loading_cats = LoadingCats()
         self.workbench.category = 'milk'
+        # This chapter is text-only: go straight to the cafe background and
+        # avoid the loading, cup-station, and coffee gameplay flow.
         self.loading_elapsed = 0.0
-        self.scene_fade = 0.0
-        self.loading_target = "intro_scene"
-        self.state = "loading"
+        self.scene_fade = 1.0
+        self.state = "dialogue"
 
     def start_cup_station(self) -> None:
         self.loading_elapsed = 0.0
@@ -238,7 +239,7 @@ class App:
                 self.state = "menu"
         elif self.state == "intro_scene":
             if self.scene_fade >= 1.0:
-                self.state = "customer"
+                self.state = "dialogue"
         elif self.state == 'loading' and self.loading_elapsed >= .4:
             self.state = self.loading_target
         elif self.state == 'customer':
@@ -253,8 +254,7 @@ class App:
             elif self.scene_fade >= 1.0:
                 self.coffee_station.click(self.station_pointer(point))
         elif self.state == "dialogue":
-            if self.dialogue.advance():
-                self.state = "coffee"
+            self.dialogue.advance()
 
     def draw(self) -> None:
         pointer = self.pointer(pygame.mouse.get_pos())
@@ -343,12 +343,12 @@ class App:
             self.sfx.play("advance")
             if self.state == "intro_scene":
                 if self.scene_fade >= 1.0:
-                    self.state = "customer"
+                    self.state = "dialogue"
             elif self.state == 'customer':
                 if self.customer_step == 0: self.customer_step = 1
                 else: self.start_cup_station()
-            elif self.dialogue.advance():
-                self.state = "customer"
+            else:
+                self.dialogue.advance()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             if self.state != "menu":
                 self.sfx.play("back")

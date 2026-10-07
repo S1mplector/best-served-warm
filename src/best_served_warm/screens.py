@@ -69,12 +69,12 @@ def draw_dialogue(app, pointer: tuple[float, float]) -> None:
     """Draw a compact visual-novel textbox over the live bakery scene."""
     title = app.dialogue.current[0]
     lines = app.dialogue.visible_lines
-    box = pygame.Rect(18, 78, 156, 27)
+    box = pygame.Rect(18, 76, 156, 29)
     _pixel_panel(app.canvas, box, DIALOGUE_FACE)
-    nameplate = pygame.Rect(22, 69, 72, 10)
+    nameplate = pygame.Rect(22, 67, 72, 10)
     _pixel_panel(app.canvas, nameplate, DIALOGUE_LABEL)
-    app.text(title, (26, 74), anchor="midleft", small=True, larger=True, color=DIALOGUE_INK)
-    for y, line in zip((84, 92, 100), lines):
+    app.text(title, (26, 72), anchor="midleft", small=True, larger=True, color=DIALOGUE_INK)
+    for y, line in zip((81, 89, 97), lines):
         app.text(line, (23, y), anchor="midleft", small=True, larger=True, color=DIALOGUE_INK)
     # A small breathing advance marker replaces the modal's separate button.
     offset = int(app.elapsed * 2) % 2
