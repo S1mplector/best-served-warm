@@ -2,6 +2,10 @@
 
 All runtime characters use a transparent 160×160 RGBA canvas. Fit the complete hair, shoulders, hands and waist inside a 150×150 area, horizontally centered, with the waist baseline at y=155 and bottom-center anchor (80, 155). Keep this canvas and anchor for every future character and expression. Display only with nearest-neighbor scaling. Always regenerate from the original source, never upscale the previous smaller sprites.
 
+Lena: user-supplied `lena_source.png`, a stoic goth barista with crossed arms. The user supplied the clear-background source on 2026-10-07. Sam: user-supplied `sam_source.png`, a curly-haired cheerful barista, with a clear-background source supplied the same day. The source PNGs are kept byte-for-byte at their original 160 px width and native pixel detail. Since their source canvas heights differ, runtime copies (`assets/characters/lena.png` and `assets/characters/sam.png`) add only transparent padding at the top to make matching 160×160 canvases; no source pixels are resized, filtered, recolored, or quantized. The game enlarges them with an adaptive integer nearest-neighbor scale and anchors their lower edge behind the dialogue panel. Speaker labels are `LENA` and `SAM`.
+
+Mrs Heather: user-supplied transparent `mrs_heather_source.png`; the runtime sprite `assets/characters/mrs_heather.png` is the exact same 160×160 PNG. Dialogue manager turns use the label `MRS HEATHER`. All speaker sprites use the same adaptive integer nearest-neighbor scale and shared left position/baseline, and are drawn behind the dialogue panel.
+
 Spiky guy: energetic young adult with chestnut spikes, welcoming wave, mustard overshirt and cream tee. Hybrid anime / stylized indie game art, warm bakery palette. Source created with the built-in imagegen tool on 2026-10-05. At the user's request, Python performs nearest-neighbor reduction, hard alpha thresholding and 32-color quantization without dithering. The original source is preserved.
 
 Regenerate from the repository root:

@@ -18,6 +18,24 @@ The root MIT license covers the project code. Asset rights are described above.
 - Source: `IMG_6443.PNG`, supplied directly by the user on 2026-10-03 as artwork made by his girlfriend.
 - In-game copy: `assets/images/main_menu.png`, original 192x108 RGBA PNG preserved without resampling. The runtime makes transient hover tints only within the baked-in button interiors.
 
+# Lena character
+
+- Source: `Stoic_Goth_Barista_160x160 3.png`, the clear-background version supplied by the user on 2026-10-07, replacing the original matte-backed source.
+- Exact source copy: `art_sources/characters/lena_source.png`; runtime canvas with transparent top padding only: `assets/characters/lena.png` (160x160; original art pixels unchanged).
+- No external creator or license terms were supplied; this asset was provided by the project owner for use in the game.
+
+# Mrs Heather character
+
+- Source: `Cafe_Manager_160x160_Nearest_Neighbor 2.png`, supplied directly by the user on 2026-10-07.
+- The transparent 160x160 PNG is preserved exactly as both `art_sources/characters/mrs_heather_source.png` and `assets/characters/mrs_heather.png`.
+- No external creator or license terms were supplied; this asset was provided by the project owner for use in the game.
+
+# Sam character
+
+- Source: `Curly_Barista_True_Pixel_160x160 3.png`, the clear-background version supplied by the user on 2026-10-07, replacing the original matte-backed source.
+- Exact source copy: `art_sources/characters/sam_source.png`; runtime canvas with transparent top padding only: `assets/characters/sam.png` (160x160; original art pixels unchanged).
+- No external creator or license terms were supplied; this asset was provided by the project owner for use in the game.
+
 # Menu cursor and cat
 
 - `assets/cursor/megabyte/cursor-pointer-1.png` and `cursor-pointer-5.png`: cursor sprites from Megabyte Games, [Mouse Cursor Pack](https://megabyte-games.itch.io/mouse-cursor-pack), CC0. The pack ZIP is retained in `../outputs/itch-free-assets/` for research.

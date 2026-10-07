@@ -69,7 +69,27 @@ def draw_dialogue(app, pointer: tuple[float, float]) -> None:
     """Draw a compact visual-novel textbox over the live bakery scene."""
     title = app.dialogue.current[0]
     lines = app.dialogue.visible_lines
-    box = pygame.Rect(18, 76, 156, 29)
+    portrait = {"LENA": app.lena_portrait, "SAM": app.sam_portrait,
+                "MRS HEATHER": app.heather_portrait}.get(title)
+    if portrait:
+        width, height = app.text_layer.get_size()
+        # Keep the source pixels intact and enlarge them at a uniform integer
+        # scale. Draw onto the scene first; the dialogue panels then cover the
+        # sprite's lower edge so the character feels planted behind the box.
+        pixel_scale = max(1, round(height / 216))
+        box_top = round(76 * height / 108)
+        sprite_bottom = box_top + round(4 * height / 108)
+        # Use one shared scale and anchor for every speaker so heads stay
+        # proportionate and the sprites sit at the same height behind the box.
+        pixel_scale = min(pixel_scale,
+                          max(1, min(sprite_bottom, width) // portrait.get_height()))
+        sprite = pygame.transform.scale(
+            portrait, (portrait.get_width() * pixel_scale,
+                       portrait.get_height() * pixel_scale))
+        x = round(4 * width / 192)
+        y = sprite_bottom - sprite.get_height()
+        app.window.blit(sprite, (x, y))
+    box = pygame.Rect(20, 76, 152, 27)
     _pixel_panel(app.canvas, box, DIALOGUE_FACE)
     nameplate = pygame.Rect(22, 67, 72, 10)
     _pixel_panel(app.canvas, nameplate, DIALOGUE_LABEL)

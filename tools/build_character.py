@@ -1,5 +1,6 @@
 """Normalize generated waist-up characters onto the shared 160x160 pixel canvas."""
 import argparse
+from collections import deque
 from pathlib import Path
 from PIL import Image, ImageFilter
 
@@ -9,12 +10,39 @@ parser.add_argument('output', type=Path)
 parser.add_argument('--preview', type=Path)
 parser.add_argument('--crop-bottom', type=int, help='Crop source at this waist-line pixel before resizing')
 parser.add_argument('--pixel-clusters', action='store_true', help='Simplify texture and use 16 flat colors on the native 160x160 canvas')
+parser.add_argument('--remove-white-background', action='store_true', help='Make near-white background pixels connected to the canvas edge transparent')
 args = parser.parse_args()
 source = Image.open(args.source).convert('RGBA')
 if args.crop_bottom is not None:
     if not 0 < args.crop_bottom <= source.height:
         raise ValueError('Crop bottom must fall inside source image')
     source = source.crop((0, 0, source.width, args.crop_bottom))
+if args.remove_white_background:
+    pixels = source.load()
+    width, height = source.size
+    pending = deque((x, y) for x in range(width) for y in (0, height - 1))
+    pending.extend((x, y) for y in range(height) for x in (0, width - 1))
+    visited: set[tuple[int, int]] = set()
+    while pending:
+        x, y = pending.popleft()
+        if (x, y) in visited:
+            continue
+        visited.add((x, y))
+        r, g, b, alpha = pixels[x, y]
+        if alpha < 128 or min(r, g, b) < 235 or max(r, g, b) - min(r, g, b) > 24:
+            continue
+        pixels[x, y] = (r, g, b, 0)
+        pending.extend((nx, ny) for nx, ny in
+                       ((x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1))
+                       if 0 <= nx < width and 0 <= ny < height and (nx, ny) not in visited)
+    # Some illustrations enclose matte-white gaps (for example, between an
+    # arm and the torso). Clear exact near-white pixels there as well; warm
+    # cream highlights stay because they are not neutral white.
+    for y in range(height):
+        for x in range(width):
+            r, g, b, alpha = pixels[x, y]
+            if alpha and min(r, g, b) >= 245 and max(r, g, b) - min(r, g, b) <= 12:
+                pixels[x, y] = (r, g, b, 0)
 # Ignore faint edge pixels when finding the subject. Keep a hard alpha mask.
 alpha = source.getchannel('A').point(lambda a: 255 if a >= 128 else 0)
 source.putalpha(alpha)

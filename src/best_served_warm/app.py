@@ -37,6 +37,9 @@ class App:
         self.station_overlay = pygame.Surface(STATION_SIZE, pygame.SRCALPHA)
         self.coffee_station = CoffeeStation()
         self.loading_cat = pygame.image.load(str(asset_path("cat", "white-sleep.png"))).convert_alpha()
+        self.lena_portrait = pygame.image.load(str(asset_path("characters", "lena.png"))).convert_alpha()
+        self.sam_portrait = pygame.image.load(str(asset_path("characters", "sam.png"))).convert_alpha()
+        self.heather_portrait = pygame.image.load(str(asset_path("characters", "mrs_heather.png"))).convert_alpha()
         self.text_layer = pygame.Surface(self.window.get_size(), pygame.SRCALPHA)
         self.clock = pygame.time.Clock()
         # Rasterize the pixel font once; enlarge glyphs only by whole-number factors.
